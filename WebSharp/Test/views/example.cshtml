@@ -6,5 +6,11 @@
 	<body>
         <h1>Example Page</h1>
         <p>Greetings, @Model.Name</p>
+        <ul>
+        @for (int i = Model.From; i <= Model.To; i++)
+        {
+            <li>@i</li>
+        }
+        </ul>
 	</body>
 </html>
