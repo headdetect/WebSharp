@@ -18,7 +18,18 @@ Console.WriteLine("Press 'Ctrl+C' to exit.");
 while (true) System.Threading.Thread.Yield();
 ```
 
-Say this file is saved to server.cs. You can run it with `WebSharp server.cs`.
+Say this file is saved to server.csx. You can run it with `WebSharp server.csx`.
+
+Here's another example of a simple server that only serves static content:
+
+```csharp
+// Defines a simple static content handler that serves content from the working directory
+var content = new StaticContentHandler(Directory.GetCurrentDirectory());
+
+var httpd = new HttpServer();
+httpd.Request = content.Serve;
+httpd.Start(new IPEndPoint(IPAddress.Any, 8080));
+```
 
 WebSharp is very young, and is still a work in progress. Ideas and feedback are immensely
 valuable, please drop them off as GitHub issues. It is **extremely** likely that the structure

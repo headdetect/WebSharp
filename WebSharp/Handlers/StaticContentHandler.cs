@@ -34,7 +34,7 @@ namespace WebSharp.Handlers
         {
             var parts = request.Uri.LocalPath.Split(Path.DirectorySeparatorChar);
             if (parts.Any(p => p == ".."))
-                throw new HttpForbiddenException("Disallowed characters in path"); // TODO: Some other exception in WebSharp.Exceptions
+                throw new HttpForbiddenException("Disallowed characters in path");
             if (!File.Exists(Path.Combine(BaseDirectory, path)))
                 throw new HttpNotFoundException();
             response.Body = File.OpenRead(Path.Combine(BaseDirectory, path));

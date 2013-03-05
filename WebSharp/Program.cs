@@ -49,11 +49,13 @@ namespace WebSharp
             var engine = new ScriptEngine();
             engine.AddReference(Assembly.GetEntryAssembly().Location);
             engine.AddReference(typeof(Griffin.Networking.Protocol.Http.Protocol.IRequest).Assembly);
+            engine.AddReference(typeof(RazorEngine.Razor).Assembly);
             foreach (var reference in config.AutoImports)
                 engine.AddReference(reference);
 
             var session = engine.CreateSession();
             session.ImportNamespace("WebSharp");
+            session.ImportNamespace("RazorEngine");
             session.ImportNamespace("Griffin.Networking.Protocol.Http.Protocol");
             foreach (var reference in config.AutoImports)
                 session.ImportNamespace(reference);
