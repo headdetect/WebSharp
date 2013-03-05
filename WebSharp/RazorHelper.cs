@@ -11,7 +11,7 @@ namespace WebSharp
         static RazorHelper()
         {
             var config = new TemplateServiceConfiguration();
-            config.BaseTemplateType = typeof(RazorBase);
+            //config.BaseTemplateType = typeof(RazorBase);
             var service = new TemplateService(config);
             Razor.SetTemplateService(service);
         }
