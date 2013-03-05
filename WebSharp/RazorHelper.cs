@@ -10,7 +10,8 @@ namespace WebSharp
     {
         static RazorHelper()
         {
-            var config = new FluentTemplateServiceConfiguration(c => c.WithEncoding(RazorEngine.Encoding.Html));
+            var config = new TemplateServiceConfiguration();
+            config.BaseTemplateType = typeof(RazorBase);
             var service = new TemplateService(config);
             Razor.SetTemplateService(service);
         }
