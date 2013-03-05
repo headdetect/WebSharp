@@ -74,15 +74,15 @@ namespace WebSharp
         static HttpServer()
         {
             ContentTypes = new Dictionary<string, string>();
-            AddContentType("png", "image/png");
-            AddContentType("jpeg", "image/jpeg");
-            AddContentType("txt", "text/plain");
-            AddContentType("js", "text/javascript");
-            AddContentType("css", "text/css");
-            AddContentType("html", "text/html");
+            SetContentType("png", "image/png");
+            SetContentType("jpeg", "image/jpeg");
+            SetContentType("txt", "text/plain");
+            SetContentType("js", "text/javascript");
+            SetContentType("css", "text/css");
+            SetContentType("html", "text/html");
         }
 
-        public static void AddContentType(string extension, string type)
+        public static void SetContentType(string extension, string type)
         {
             ContentTypes[extension.ToUpper()] = type;
         }
