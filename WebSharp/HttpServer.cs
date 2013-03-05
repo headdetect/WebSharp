@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Griffin.Networking.Messaging;
 using Griffin.Networking.Protocol.Http;
 using Griffin.Networking.Protocol.Http.Protocol;
+using WebSharp.Exceptions;
 
 namespace WebSharp
 {
@@ -48,21 +50,49 @@ namespace WebSharp
                 }
                 catch (Exception e)
                 {
-                    // TODO: Custom exception handlers
-                    WriteExceptionResponse(e, response);
+                    HandleException(e, response);
                 }
             }
             response.Body.Position = 0;
             return response;
         }
 
-        private void WriteExceptionResponse(Exception e, IResponse response)
+        private void HandleException(Exception e, IResponse response)
         {
+            // TODO: Custom exception handlers
             response.ContentType = "text/plain";
             var writer = new StreamWriter(response.Body);
             writer.Write("An unhandled exception occured while processing this request: " +
                 Environment.NewLine + e.ToString());
             writer.Flush();
+            if (e is HttpNotFoundException)
+                response.StatusCode = 404;
+            else
+                response.StatusCode = 400;
+        }
+
+        static HttpServer()
+        {
+            ContentTypes = new Dictionary<string, string>();
+            AddContentType("png", "image/png");
+            AddContentType("jpeg", "image/jpeg");
+            AddContentType("txt", "text/plain");
+            AddContentType("js", "text/javascript");
+            AddContentType("css", "text/css");
+            AddContentType("html", "text/html");
+        }
+
+        public static void AddContentType(string extension, string type)
+        {
+            ContentTypes[extension.ToUpper()] = type;
+        }
+
+        private static Dictionary<string, string> ContentTypes { get; set; }
+        public static string GetContentTypeForExtension(string extension)
+        {
+            if (!ContentTypes.ContainsKey(extension.ToUpper()))
+                return null; // TODO: Should we do this?
+            return ContentTypes[extension.ToUpper()];
         }
     }
 }

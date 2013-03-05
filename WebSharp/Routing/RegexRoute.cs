@@ -10,14 +10,18 @@ namespace WebSharp.Routing
 {
     public class RegexRoute : IRouteMapper
     {
-        public delegate void RouteHandler(RegexRouteContext route, IRequest request, IResponse response);
-        public RouteHandler Handler;
+        public delegate void RegexRouteHandler(RegexRouteContext route, IRequest request, IResponse response);
+        public RegexRouteHandler Handler;
 
         public Regex Expression { get; set; }
 
-        public RegexRoute(string expression, RouteHandler handler) : this(new Regex("^" + expression + "$"), handler) { }
+        public RegexRoute(string expression, HttpRouter.GenericRouteHandler handler) : this(expression, (a, b, c) => handler(b, c)) { }
 
-        public RegexRoute(Regex expression, RouteHandler handler)
+        public RegexRoute(Regex expression, HttpRouter.GenericRouteHandler handler) : this(expression, (a, b, c) => handler(b, c)) { }
+
+        public RegexRoute(string expression, RegexRouteHandler handler) : this(new Regex("^" + expression + "$"), handler) { }
+
+        public RegexRoute(Regex expression, RegexRouteHandler handler)
         {
             Handler = handler;
             Expression = expression;
