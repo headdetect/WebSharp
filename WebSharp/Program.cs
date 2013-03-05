@@ -53,17 +53,41 @@ namespace WebSharp
             foreach (var reference in config.AutoImports)
                 engine.AddReference(reference);
 
-            var session = engine.CreateSession();
+            var scriptBase = new ScriptBase();
+            var session = engine.CreateSession(scriptBase, typeof(ScriptBase));
+            scriptBase.Session = session;
             session.ImportNamespace("WebSharp");
+            session.ImportNamespace("WebSharp.Routing");
+            session.ImportNamespace("WebSharp.Handlers");
             session.ImportNamespace("RazorEngine");
             session.ImportNamespace("Griffin.Networking.Protocol.Http.Protocol");
             foreach (var reference in config.AutoImports)
                 session.ImportNamespace(reference);
 
             // TODO: Error handling
-            session.ExecuteFile(args[0]);
+            ExecuteScript(scriptBase, baseFile);
 
             return 0;
         }
+        
+		static void ExecuteScript(ScriptBase scriptBase, string baseFile)
+		{
+		    var script = File.ReadAllText(baseFile);
+		    var lines = script.Replace("\r", "").Split('\n');
+		    for (int i = 0; i < lines.Length; i++)
+		    {
+		        if (lines[i].StartsWith("//"))
+		        {
+		            if (lines[i].StartsWith("// Include:"))
+		            {
+		                var include = lines[i].Substring(lines[i].IndexOf(':') + 1).Trim();
+		                ExecuteScript(scriptBase, include);
+		            }
+		        }
+	            else
+	               break;
+		    }
+		    scriptBase.Session.Execute(script);
+		}
     }
 }

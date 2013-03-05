@@ -1,25 +1,9 @@
-﻿using System.IO;
+﻿// Include: SampleRouter.csx
+using System.IO;
 using System.Threading;
-using WebSharp.Routing;
-using WebSharp.Handlers;
-
-class SampleRouter : IRouteMapper
-{
-    public bool Match(IRequest request)
-    {
-        return request.Uri.LocalPath == "/foobar";
-    }
-    
-    public void Execute(IRequest request, IResponse response)
-    {
-        var writer = new StreamWriter(response.Body);
-        writer.Write("Custom routing!");
-        writer.Flush();
-    }
-}
 
 // Compile Razor templates
-RazorHelper.CompileAllViews("Test/views");
+RazorHelper.CompileAllViews("views");
 
 var httpd = new HttpServer();
 var router = new HttpRouter();
@@ -45,7 +29,7 @@ router.AddRoute(new RegexRoute("/greet/(?<name>[A-Za-z]+)", (context, request, r
     writer.Flush();
 }));
 
-var content = new StaticContentHandler("Test/static");
+var content = new StaticContentHandler("static");
 router.AddRoute(new RegexRoute("/static/(?<path>[A-Za-z0-9_/\\.-]+)", (c, req, res) => content.Serve(c["path"], req, res)));
 
 var razor = new RazorHandler();

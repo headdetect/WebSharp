@@ -19,7 +19,7 @@ namespace WebSharp.Routing
 
         public RegexRoute(Regex expression, HttpRouter.GenericRouteHandler handler) : this(expression, (a, b, c) => handler(b, c)) { }
 
-        public RegexRoute(string expression, RegexRouteHandler handler) : this(new Regex("^" + expression + "$", RegexOptions.Compiled), handler) { }
+        public RegexRoute(string expression, RegexRouteHandler handler) : this(new Regex("^" + expression + "/?$", RegexOptions.Compiled), handler) { }
 
         public RegexRoute(Regex expression, RegexRouteHandler handler)
         {

@@ -35,7 +35,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <StartAction>Project</StartAction>
-    <StartArguments>Test/server.csx</StartArguments>
+    <StartArguments>server.csx</StartArguments>
+    <StartWorkingDirectory>bin\Debug\Test\</StartWorkingDirectory>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -92,6 +93,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing\IRouteMapper.cs" />
     <Compile Include="Routing\RegexRoute.cs" />
+    <Compile Include="ScriptBase.cs" />
+    <None Include="Test\SampleRouter.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Test\server.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
