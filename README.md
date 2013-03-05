@@ -8,7 +8,6 @@ node.js, but using C# with the power of .NET.
 var httpd = new HttpServer();
 httpd.Request = (request, response) =>
 {
-    response.ContentType = "text/plain";
     var stream = new StreamWriter(response.Body);
     stream.Write("Hello, world!");
     stream.Flush();
@@ -16,7 +15,7 @@ httpd.Request = (request, response) =>
 httpd.Start(new IPEndPoint(IPAddress.Loopback, 8080));
 
 Console.WriteLine("Press 'Ctrl+C' to exit.");
-while (true);
+while (true) System.Threading.Thread.Yield();
 ```
 
 Say this file is saved to server.cs. You can run it with `WebSharp server.cs`.
