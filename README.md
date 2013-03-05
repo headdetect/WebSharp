@@ -20,7 +20,8 @@ node.js, but using C# with the power of .NET.
 Say this file is saved to server.cs. You can run it with `WebSharp server.cs`.
 
 WebSharp is very young, and is still a work in progress. Ideas and feedback are immensely
-valuable, please drop them off as GitHub issues.
+valuable, please drop them off as GitHub issues. It is **extremely** likely that the structure
+of the project and most of the API will change frequently in the early stages.
 
 Mono support is planned. Believe me, no one wants it more than I do. I'll get to it soon.
 

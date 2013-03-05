@@ -75,10 +75,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="Routing\HttpRouter.cs" />
     <Compile Include="HttpServer.cs" />
     <Compile Include="HttpService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routing\IRouteMapper.cs" />
+    <Compile Include="Routing\RegexRoute.cs" />
     <None Include="Test\server.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
