@@ -18,9 +18,11 @@ namespace WebSharp
                 "System.Net",
                 "System.IO"
             };
+            config.SilentlyIgnoreDuplicateFiles = true;
             return config;
         }
 
         public string[] AutoImports { get; set; }
+        public bool SilentlyIgnoreDuplicateFiles { get; set; }
     }
 }

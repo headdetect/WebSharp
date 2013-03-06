@@ -1,9 +1,6 @@
-﻿// Include: SampleRouter.csx
-using System.IO;
+﻿// Include: *.csx
+// Include: views/*.cshtml
 using System.Threading;
-
-// Compile Razor templates
-RazorHelper.CompileAllViews("views");
 
 var httpd = new HttpServer();
 var router = new HttpRouter();
