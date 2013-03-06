@@ -80,8 +80,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="Exceptions\HttpBadRequestException.cs" />
+    <Compile Include="Exceptions\HttpConflictException.cs" />
+    <Compile Include="Exceptions\HttpException.cs" />
+    <Compile Include="Exceptions\HttpExpectationFailedException.cs" />
     <Compile Include="Exceptions\HttpForbiddenException.cs" />
+    <Compile Include="Exceptions\HttpGoneException.cs" />
+    <Compile Include="Exceptions\HttpImATeapotException.cs" />
+    <Compile Include="Exceptions\HttpLengthRequiredException.cs" />
+    <Compile Include="Exceptions\HttpMethodNotAllowedException.cs" />
+    <Compile Include="Exceptions\HttpNotAcceptableException.cs" />
     <Compile Include="Exceptions\HttpNotFoundException.cs" />
+    <Compile Include="Exceptions\HttpPaymentRequiredException.cs" />
+    <Compile Include="Exceptions\HttpPreconditionFailedException.cs" />
+    <Compile Include="Exceptions\HttpProxyAuthenticationRequiredException.cs" />
+    <Compile Include="Exceptions\HttpRequestedRangeNotSatisfiableException.cs" />
+    <Compile Include="Exceptions\HttpRequestEntityTooLargeException.cs" />
+    <Compile Include="Exceptions\HttpRequestTimeoutException.cs" />
+    <Compile Include="Exceptions\HttpRequestUriTooLongException.cs" />
+    <Compile Include="Exceptions\HttpUnauthorizedException.cs" />
+    <Compile Include="Exceptions\HttpUnsupportedMediaTypeException.cs" />
     <Compile Include="Handlers\RazorHandler.cs" />
     <Compile Include="Handlers\StaticContentHandler.cs" />
     <Compile Include="RazorBase.cs" />
@@ -123,9 +141,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Test\views" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

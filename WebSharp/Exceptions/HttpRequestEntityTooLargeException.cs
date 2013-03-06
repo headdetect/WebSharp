@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-    public class HttpNotFoundException : HttpException
+    public class HttpRequestEntityTooLargeException : HttpException
     {
         public override int StatusCode
         {
-            get { return 404; }
+            get { return 413; }
         }
 
-        public HttpNotFoundException() : base()
+        public HttpRequestEntityTooLargeException() : base()
         {
         }
 
-        public HttpNotFoundException(string message) : base(message)
+        public HttpRequestEntityTooLargeException(string message) : base(message)
         {
         }
     }

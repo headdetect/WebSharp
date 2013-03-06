@@ -10,6 +10,8 @@ using Griffin.Networking.Messaging;
 using Griffin.Networking.Protocol.Http;
 using Griffin.Networking.Protocol.Http.Protocol;
 using WebSharp.Exceptions;
+using HttpException = WebSharp.Exceptions.HttpException;
+using GHttpException = Griffin.Networking.Protocol.Http.HttpException;
 
 namespace WebSharp
 {
@@ -65,10 +67,10 @@ namespace WebSharp
             writer.Write("An unhandled exception occured while processing this request: " +
                 Environment.NewLine + e.ToString());
             writer.Flush();
-            if (e is HttpNotFoundException)
-                response.StatusCode = 404;
+            if (e is HttpException)
+                response.StatusCode = (e as HttpException).StatusCode;
             else
-                response.StatusCode = 400;
+                response.StatusCode = 500;
         }
 
         static HttpServer()

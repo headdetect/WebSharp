@@ -25,7 +25,7 @@ namespace WebSharp.Handlers
             if (parts.Any(p => p == ".."))
                 throw new HttpForbiddenException("Disallowed characters in path");
             if (!File.Exists(Path.Combine(BaseDirectory, request.Uri.LocalPath)))
-                throw new HttpNotFoundException();
+                throw new HttpNotFoundException("The requested static content was not found.");
             response.Body = File.OpenRead(Path.Combine(BaseDirectory, request.Uri.LocalPath));
             response.ContentType = HttpServer.GetContentTypeForExtension(Path.GetExtension(request.Uri.LocalPath));
         }
@@ -36,7 +36,7 @@ namespace WebSharp.Handlers
             if (parts.Any(p => p == ".."))
                 throw new HttpForbiddenException("Disallowed characters in path");
             if (!File.Exists(Path.Combine(BaseDirectory, path)))
-                throw new HttpNotFoundException();
+                throw new HttpNotFoundException("The requested static content was not found.");
             response.Body = File.OpenRead(Path.Combine(BaseDirectory, path));
             response.ContentType = HttpServer.GetContentTypeForExtension(Path.GetExtension(path).Substring(1));
         }

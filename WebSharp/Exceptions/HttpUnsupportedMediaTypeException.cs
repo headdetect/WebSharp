@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-    public class HttpNotFoundException : HttpException
+    public class HttpUnsupportedMediaTypeException : HttpException
     {
         public override int StatusCode
         {
-            get { return 404; }
+            get { return 415; }
         }
 
-        public HttpNotFoundException() : base()
+        public HttpUnsupportedMediaTypeException() : base()
         {
         }
 
-        public HttpNotFoundException(string message) : base(message)
+        public HttpUnsupportedMediaTypeException(string message) : base(message)
         {
         }
     }

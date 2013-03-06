@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-    public class HttpForbiddenException : Exception
+    public class HttpForbiddenException : HttpException
     {
+        public override int StatusCode
+        {
+            get { return 403; }
+        }
+
         public HttpForbiddenException() : base()
         {
         }
