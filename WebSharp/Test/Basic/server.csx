@@ -33,12 +33,12 @@ router.AddRoute(new RegexRoute("/(?<file>[A-Za-z_-]+).css", (context, request, r
     response.ContentType = "text/css";
 }));
 
-router.AddRoute(new RegexRoute("/greet/(?<name>[A-Za-z]+)", (context, request, response) =>
+router.AddRoute(new RegexRoute("/greet/(?<name>[A-Za-z]+)?", (context, request, response) =>
 {
     var writer = new StreamWriter(response.Body);
     writer.WriteLine("Hello, " + context["name"]);
     writer.Flush();
-}));
+}, new { name = "(no name)" }));
 
 var content = new StaticContentHandler("static");
 router.AddRoute(new RegexRoute("/static/(?<path>[A-Za-z0-9_/\\.-]+)", (c, req, res) => content.Serve(c["path"], req, res)));
