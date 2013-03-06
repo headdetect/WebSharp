@@ -56,6 +56,9 @@ namespace WebSharp
             engine.AddReference(typeof(RazorEngine.Razor).Assembly);
             foreach (var reference in Configuration.AutoImports)
                 engine.AddReference(reference);
+            var dependencies = Directory.GetFiles(Configuration.DependencyLocation, "*.dll");
+            foreach (var dep in dependencies)
+                engine.AddReference(Assembly.LoadFrom(dep));
 
             var scriptBase = new ScriptBase();
             var session = engine.CreateSession(scriptBase, typeof(ScriptBase));
@@ -63,6 +66,7 @@ namespace WebSharp
             session.ImportNamespace("WebSharp");
             session.ImportNamespace("WebSharp.Routing");
             session.ImportNamespace("WebSharp.Handlers");
+            session.ImportNamespace("WebSharp.Exceptions");
             session.ImportNamespace("RazorEngine");
             session.ImportNamespace("Griffin.Networking.Protocol.Http.Protocol");
             foreach (var reference in Configuration.AutoImports)

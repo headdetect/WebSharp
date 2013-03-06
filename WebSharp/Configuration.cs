@@ -19,10 +19,12 @@ namespace WebSharp
                 "System.IO"
             };
             config.SilentlyIgnoreDuplicateFiles = true;
+            config.DependencyLocation = "dependencies";
             return config;
         }
 
         public string[] AutoImports { get; set; }
         public bool SilentlyIgnoreDuplicateFiles { get; set; }
+        public string DependencyLocation { get; set; }
     }
 }

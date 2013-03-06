@@ -1,6 +1,7 @@
 ﻿// Include: *.csx
 // Include: views/*.cshtml
 using System.Threading;
+using dotless.Core;
 
 var httpd = new HttpServer();
 var router = new HttpRouter();
@@ -19,6 +20,19 @@ router.AddRoute(new RegexRoute("/", (request, response) =>
     writer.WriteLine("Index page!");
     writer.Flush();
 }));
+
+// Route less files
+router.AddRoute(new RegexRoute("/(?<file>[A-Za-z_-]+).css", (context, request, response) =>
+{
+    if (!File.Exists(Path.Combine("less", context["file"] + ".less")))
+        throw new HttpNotFoundException();
+    var less = File.ReadAllText(Path.Combine("less", context["file"] + ".less"));
+    var writer = new StreamWriter(response.Body);
+    writer.Write(Less.Parse(less));
+    writer.Flush();
+    response.ContentType = "text/css";
+}));
+
 router.AddRoute(new RegexRoute("/greet/(?<name>[A-Za-z]+)", (context, request, response) =>
 {
     var writer = new StreamWriter(response.Body);
