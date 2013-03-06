@@ -1,8 +1,11 @@
 # WebSharp
 
-The idea behind WebSharp is to provide a lightweight solution for web development in C#,
-using Microsoft Roslyn and RazorEngine. The goal is to create something comparible to
-node.js, but using C# with the power of .NET.
+The idea behind WebSharp is to provide a lightweight solution for web development in C#, using
+Microsoft Roslyn and RazorEngine for rapid web development. You can have a website up and running
+in moments with WebSharp. It's built for customization - you control the web server, no more IIS.
+If you're more comfortable with ASP.NET MVC, well, there's an MVC-esque framework waiting inside
+if you want to go that route. Otherwise, there's a wide variety of ways to structure your website,
+and WebSharp gives you the power to forge your own website design.
 
 ```csharp
 var httpd = new HttpServer();
@@ -37,7 +40,25 @@ of the project and most of the API will change frequently in the early stages.
 
 Mono support is planned. Believe me, no one wants it more than I do. I'll get to it soon.
 
-## A more complex example
+## How it all works
+
+WebSharp expects you to manage your own web server in the code, and as a result, it's extremely
+customizable. Most of the time, though, your site will look something like this:
+
+* A `HttpRouter` object for directing requests through your code
+* A number of `IRouteMapper`s that direct requests to a number of "handlers"
+* Several handlers, both custom and framework-provided, to handle requests
+
+For instance, you might have several `RegexRoute`s that call `RazorHandler`s for displaying Razor
+views, or they could call some `StaticContentHandler`s for serving static files, or they could
+just call your own delegate handler that deals with it yourself.
+
+If you choose to go with a system similar to ASP.NET MVC, you'll probably end up with several
+`MvcControllerRoute`s that point to controller actions, which render and display Razor views. You
+can also take out the "C" in MVC and just have handlers that wire directly into views, or any other
+configuration you like. WebSharp lets you use any piece of the framework seperately from the rest.
+
+## A more complex MVC-esque example
 
 ```csharp
 using System.IO;
@@ -101,3 +122,8 @@ are just submodules.
 * [RazorEngine](https://github.com/Antaris/RazorEngine) for razor templates
 * [Json.NET](http://json.codeplex.com/) because JSON is awesome
 * [Griffin.Networking](https://github.com/jgauffin/griffin.networking) because System.Net.HttpListener is horrible
+
+## Building from Source
+
+You'll .NET 4.5 installed. As such, the earliest Visual Studio version you can edit it with is 2012. You can also
+use SharpDevelop, MonoDevelop, or just msbuild.
