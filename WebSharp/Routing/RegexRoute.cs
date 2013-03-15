@@ -39,7 +39,7 @@ namespace WebSharp.Routing
             {
                 var properties = defaults.GetType().GetProperties();
                 foreach (var prop in properties)
-                    DefaultGroups[prop.Name] = Convert.ToString(prop.GetValue(defaults));
+                    DefaultGroups[prop.Name] = Convert.ToString(prop.GetValue(defaults, null));
             }
         }
 

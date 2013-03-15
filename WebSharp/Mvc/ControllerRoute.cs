@@ -54,7 +54,7 @@ namespace WebSharp.Mvc
         {
             var properties = defaults.GetType().GetProperties();
             foreach (var prop in properties)
-                DefaultValues[prop.Name] = prop.GetValue(defaults);
+                DefaultValues[prop.Name] = prop.GetValue(defaults, null);
         }
 
         public Regex Route { get; set; }
