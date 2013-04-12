@@ -44,6 +44,12 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Griffin.Networking">
+      <HintPath>..\packages\Griffin.Networking.0.5.5\lib\net40\Griffin.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="Griffin.Networking.Protocol.Http">
+      <HintPath>..\packages\Griffin.Networking.Protocol.Http.0.5.1\lib\net40\Griffin.Networking.Protocol.Http.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
@@ -66,7 +72,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration.cs" />
     <Compile Include="Exceptions\HttpBadRequestException.cs" />
     <Compile Include="Exceptions\HttpConflictException.cs" />
     <Compile Include="Exceptions\HttpException.cs" />
@@ -101,61 +106,10 @@
     <Compile Include="Routing\IRouteMapper.cs" />
     <Compile Include="Mvc\ControllerRoute.cs" />
     <Compile Include="Routing\RegexRoute.cs" />
-    <None Include="Test\Basic\less\styles.less">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test\Mvc\Controllers\ExampleController.csx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test\Mvc\server.csx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test\Basic\SampleRouter.csx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test\Basic\server.csx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test\Basic\views\example.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test\Mvc\ViewModels\ExampleViewModel.csx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test\Mvc\Views\Index.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\externals\griffin.networking\Source\Griffin.Networking.Core\Griffin.Networking.csproj">
-      <Project>{599d307f-532c-4c3a-8f9e-0c74b6f0c5e8}</Project>
-      <Name>Griffin.Networking</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\externals\griffin.networking\Source\Protocols\Http\Griffin.Networking.Protocol.Http\Griffin.Networking.Protocol.Http.csproj">
-      <Project>{49640bb8-5f96-42bd-9172-4dcacedb6885}</Project>
-      <Name>Griffin.Networking.Protocol.Http</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Test\Basic\static\test.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Test\Basic\dependencies\dotless.Core.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test\Basic\dependencies\license.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Test\Basic\dependencies\dotless.Compiler.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -23,7 +23,7 @@ namespace WebSharp
                 Request = request;
             }
 
-            public IServerService CreateClient(EndPoint remoteEndPoint)
+            public INetworkService CreateClient(EndPoint remoteEndPoint)
             {
                 return new HttpServiceWrappper(Request);
             }
@@ -43,10 +43,9 @@ namespace WebSharp
         {
         }
 
-        public override void HandleReceive(object _message)
+        public override void OnRequest(IRequest request)
         {
-            var message = (IRequest)_message;
-            Send(Request(message));
+            Send(Request(request));
         }
     }
 }

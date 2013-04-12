@@ -21,7 +21,7 @@ Console.WriteLine("Press 'Ctrl+C' to exit.");
 while (true) System.Threading.Thread.Yield();
 ```
 
-Say this file is saved to server.csx. You can run it with `WebSharp server.csx`.
+Say this file is saved to server.csx. You can run it with `WebSharp.Roslyn.exe server.csx`.
 
 Here's another example of a simple server that only serves static content:
 
@@ -58,7 +58,7 @@ If you choose to go with a system similar to ASP.NET MVC, you'll probably end up
 can also take out the "C" in MVC and just have handlers that wire directly into views, or any other
 configuration you like. WebSharp lets you use any piece of the framework seperately from the rest.
 
-## A more complex MVC-esque example
+## A more complex example
 
 ```csharp
 using System.IO;
