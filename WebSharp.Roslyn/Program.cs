@@ -13,12 +13,17 @@ namespace WebSharp.Roslyn
 {
     class Program
     {
-        private static List<string> LoadedFiles;
-        internal static Configuration Configuration;
+        private static List<string> LoadedFiles { get; set; }
+        private static List<FileSystemWatcher> Watchers { get; set; }
+        private static ScriptBase BaseScript { get; set; }
+        internal static Configuration Configuration { get; set; }
 
         static int Main(string[] args)
         {
             string baseFile = null;
+
+            Configuration = Configuration.GetDefaultConfiguration();
+            Watchers = new List<FileSystemWatcher>();
 
             // Parse arguments
             for (int i = 0; i < args.Length; i++)
@@ -26,7 +31,15 @@ namespace WebSharp.Roslyn
                 var arg = args[i];
                 if (arg.StartsWith("-"))
                 {
-
+                    switch (arg)
+                    {
+                        case "--reload":
+                            Configuration.ReloadOnFileChange = true;
+                            break;
+                        case "--repl":
+                            Configuration.REPL = true;
+                            break;
+                    }
                 }
                 else
                 {
@@ -40,14 +53,12 @@ namespace WebSharp.Roslyn
                 }
             }
 
-            if (baseFile == null)
+            if (baseFile == null && !Configuration.REPL)
             {
                 Console.WriteLine("Incorrect usage. See WebSharp --help for more information.");
                 return 1;
             }
 
-            if (Configuration == null)
-                Configuration = Configuration.GetDefaultConfiguration();
             LoadedFiles = new List<string>();
 
             var engine = new ScriptEngine();
@@ -65,9 +76,9 @@ namespace WebSharp.Roslyn
                     engine.AddReference(Assembly.LoadFrom(dep));
             }
 
-            var scriptBase = new ScriptBase();
-            var session = engine.CreateSession(scriptBase, typeof(ScriptBase));
-            scriptBase.Session = session;
+            BaseScript = new ScriptBase();
+            var session = engine.CreateSession(BaseScript, typeof(ScriptBase));
+            BaseScript.Session = session;
             session.ImportNamespace("WebSharp");
             session.ImportNamespace("WebSharp.Routing");
             session.ImportNamespace("WebSharp.Handlers");
@@ -78,16 +89,32 @@ namespace WebSharp.Roslyn
             foreach (var reference in Configuration.AutoImports)
                 session.ImportNamespace(reference);
 
+            if (Configuration.REPL)
+            {
+                while (true)
+                {
+                    BaseScript.Session.Execute(Console.ReadLine());
+                }
+                return 0;
+            }
+
             // TODO: Compiler error handling
             if (!Path.IsPathRooted(baseFile))
                 baseFile = Path.GetFullPath(baseFile);
-            ExecuteScript(scriptBase, baseFile);
+            ExecuteScript(BaseScript, baseFile);
 
             return 0;
         }
 
         static void ExecuteScript(ScriptBase scriptBase, string baseFile)
         {
+            if (Configuration.ReloadOnFileChange)
+            {
+                var watcher = new FileSystemWatcher(baseFile);
+                watcher.Changed += watcher_Changed;
+                watcher.EnableRaisingEvents = true;
+                Watchers.Add(watcher);
+            }
             LoadedFiles.Add(baseFile);
             var script = File.ReadAllText(baseFile);
             var lines = script.Replace("\r", "").Split('\n');
@@ -122,6 +149,10 @@ namespace WebSharp.Roslyn
                     break;
             }
             scriptBase.Session.Execute(script);
+        }
+
+        static void watcher_Changed(object sender, FileSystemEventArgs e)
+        {
         }
     }
 }

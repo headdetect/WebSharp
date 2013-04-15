@@ -20,11 +20,15 @@ namespace WebSharp
             };
             config.SilentlyIgnoreDuplicateFiles = true;
             config.DependencyLocation = "dependencies";
+            config.ReloadOnFileChange = false;
+            config.REPL = false;
             return config;
         }
 
         public string[] AutoImports { get; set; }
         public bool SilentlyIgnoreDuplicateFiles { get; set; }
         public string DependencyLocation { get; set; }
+        public bool ReloadOnFileChange { get; set; }
+        public bool REPL { get; set; }
     }
 }
