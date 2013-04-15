@@ -3,13 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSharp", "WebSharp\WebSharp.csproj", "{52F6D83C-5D34-43AC-9249-ABB9471432C7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3891A926-53E1-4B53-AF82-8C927FCF40FB}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSharp.Roslyn", "WebSharp.Roslyn\WebSharp.Roslyn.csproj", "{C29A9A01-2316-4E36-8672-9F96DC2B10CC}"
 EndProject
 Global
