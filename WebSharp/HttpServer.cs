@@ -82,6 +82,8 @@ namespace WebSharp
             SetContentType("js", "text/javascript");
             SetContentType("css", "text/css");
             SetContentType("html", "text/html");
+            SetContentType("mkv", "video/x-matroska");
+            SetContentType("mp4", "video/mp4");
         }
 
         public static void SetContentType(string extension, string type)
