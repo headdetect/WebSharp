@@ -24,9 +24,11 @@ namespace WebSharp.Handlers
             var parts = request.Uri.LocalPath.Split(Path.DirectorySeparatorChar);
             if (parts.Any(p => p == ".."))
                 throw new HttpForbiddenException("Disallowed characters in path");
-            if (!File.Exists(Path.Combine(BaseDirectory, request.Uri.LocalPath)))
+            var path = request.Uri.LocalPath;
+            if (Path.IsPathRooted(path)) path = path.Substring(path.IndexOf(Path.DirectorySeparatorChar) + 1);
+            if (!File.Exists(Path.Combine(BaseDirectory, path)))
                 throw new HttpNotFoundException("The requested static content was not found.");
-            response.Body = File.OpenRead(Path.Combine(BaseDirectory, request.Uri.LocalPath));
+            response.Body = File.OpenRead(Path.Combine(BaseDirectory, path));
             response.ContentType = HttpServer.GetContentTypeForExtension(Path.GetExtension(request.Uri.LocalPath));
         }
 
@@ -35,6 +37,7 @@ namespace WebSharp.Handlers
             var parts = request.Uri.LocalPath.Split(Path.DirectorySeparatorChar);
             if (parts.Any(p => p == ".."))
                 throw new HttpForbiddenException("Disallowed characters in path");
+            if (Path.IsPathRooted(path)) path = path.Substring(path.IndexOf(Path.DirectorySeparatorChar) + 1);
             if (!File.Exists(Path.Combine(BaseDirectory, path)))
                 throw new HttpNotFoundException("The requested static content was not found.");
             response.Body = File.OpenRead(Path.Combine(BaseDirectory, path));
@@ -46,7 +49,9 @@ namespace WebSharp.Handlers
             var parts = request.Uri.LocalPath.Split(Path.DirectorySeparatorChar);
             if (parts.Any(p => p == ".."))
                 return false;
-            if (!File.Exists(Path.Combine(BaseDirectory, request.Uri.LocalPath)))
+            var path = request.Uri.LocalPath;
+            if (Path.IsPathRooted(path)) path = path.Substring(path.IndexOf(Path.DirectorySeparatorChar) + 1);
+            if (!File.Exists(Path.Combine(BaseDirectory, path)))
                 return false;
             return true;
         }
