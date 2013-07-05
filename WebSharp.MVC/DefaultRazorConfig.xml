@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xipton.razor>
+  <rootOperator path="/" />
+  
+  <templates
+    baseType="Xipton.Razor.TemplateBase`1"
+    language="C#"
+    defaultExtension=".cshtml"
+    autoIncludeName="_ViewStart" 
+    sharedLocation="~/Shared"
+    includeGeneratedSourceCode="false"
+    htmlEncode="true" />
+
+  <references>
+    <clear/>
+    <add reference="mscorlib.dll"/>
+    <add reference="system.dll"/>
+    <add reference="system.core.dll"/>
+    <add reference="microsoft.csharp.dll"/>
+    <add reference="*.dll"/>
+    <add reference="*.exe"/>
+  </references>
+
+  <namespaces>
+    <clear/>
+    <add namespace="System"/>
+    <add namespace="System.Collections"/>
+    <add namespace="System.Collections.Generic"/>
+    <add namespace="System.Dynamic"/>
+    <add namespace="System.IO"/>
+    <add namespace="System.Linq"/>
+    <add namespace="Xipton.Razor.Extension"/>
+  </namespaces>
+
+  <contentProviders>
+    <add type="Xipton.Razor.Core.ContentProvider.FileContentProvider" rootFolder="./Views" />
+  </contentProviders>
+</xipton.razor>

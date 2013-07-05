@@ -39,12 +39,13 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RazorEngine">
-      <HintPath>..\lib\RazorEngine.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Razor">
       <HintPath>..\lib\System.Web.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="Xipton.Razor">
+      <HintPath>..\lib\Xipton.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Dynamic" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -57,12 +58,14 @@
     <Compile Include="Results\JsonResult.cs" />
     <Compile Include="Routing\MvcRouter.cs" />
     <Compile Include="Results\ViewResult.cs" />
-    <Compile Include="RazorBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebSharp\WebSharp.csproj">
       <Project>{52F6D83C-5D34-43AC-9249-ABB9471432C7}</Project>
       <Name>WebSharp</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DefaultRazorConfig.xml" />
   </ItemGroup>
 </Project>

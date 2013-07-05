@@ -55,9 +55,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RazorEngine">
-      <HintPath>..\lib\RazorEngine.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Razor">
       <HintPath>..\lib\System.Web.Razor.dll</HintPath>
     </Reference>
@@ -66,6 +63,9 @@
     </Reference>
     <Reference Include="Griffin.Networking.Protocol.Http">
       <HintPath>..\lib\Griffin.Networking.Protocol.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Xipton.Razor">
+      <HintPath>..\lib\Xipton.Razor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -89,10 +89,7 @@
     <Compile Include="Exceptions\HttpRequestUriTooLongException.cs" />
     <Compile Include="Exceptions\HttpUnauthorizedException.cs" />
     <Compile Include="Exceptions\HttpUnsupportedMediaTypeException.cs" />
-    <Compile Include="Handlers\RazorHandler.cs" />
     <Compile Include="Handlers\StaticContentHandler.cs" />
-    <Compile Include="RazorBase.cs" />
-    <Compile Include="RazorHelper.cs" />
     <Compile Include="Routing\HttpRouter.cs" />
     <Compile Include="HttpServer.cs" />
     <Compile Include="HttpService.cs" />

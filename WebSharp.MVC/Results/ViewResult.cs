@@ -1,19 +1,27 @@
 using System;
+using System.Dynamic;
 using Griffin.Networking.Protocol.Http.Protocol;
 using System.IO;
-using RazorEngine;
-using RazorEngine.Templating;
-using RazorEngine.Configuration;
+using Xipton.Razor;
+using Xipton.Razor.Config;
+using System.Web.Razor;
 
 namespace WebSharp.MVC
 {
     public class ViewResult : ActionResult
     {
+        static ViewResult()
+        {
+            var config = new RazorConfig();
+            Razor = new RazorMachine();
+        }
+
         /// <summary>
         /// When set to true, views will be compiled and cached. This will improve performance, but live updates will require an
         /// application restart.
         /// </summary>
         public static bool CompileViews = false;
+        private static RazorMachine Razor { get; set; }
 
         public string View { get; set; }
         public object Model { get; set; }
@@ -31,12 +39,11 @@ namespace WebSharp.MVC
 
             if (CompileViews)
             {
-                if (Razor.Resolve(path) == null)
-                    Razor.Compile(File.ReadAllText(path), path);
-                result = Razor.Run(path);
+                Razor.RegisterTemplate(path, File.ReadAllText(path));
+                result = Razor.ExecuteUrl(path, null, null, false, true).ToString();
             }
             else
-                result = Razor.Parse(path);
+                result = Razor.Execute(File.ReadAllText(path), Model, new ExpandoObject(), false, true).ToString();
 
             writer.Write(result);
             writer.Flush();
