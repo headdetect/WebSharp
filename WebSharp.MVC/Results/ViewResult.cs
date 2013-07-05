@@ -3,6 +3,7 @@ using System.Dynamic;
 using Griffin.Networking.Protocol.Http.Protocol;
 using System.IO;
 using Xipton.Razor;
+using System.Reflection;
 using Xipton.Razor.Config;
 using System.Web.Razor;
 
@@ -12,7 +13,7 @@ namespace WebSharp.MVC
     {
         static ViewResult()
         {
-            var config = new RazorConfig();
+            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("WebSharp.MVC.DefaultRazorConfig.xml");
             Razor = new RazorMachine();
         }
 

@@ -46,6 +46,7 @@
       <HintPath>..\lib\Xipton.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Dynamic" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
