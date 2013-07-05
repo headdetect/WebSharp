@@ -107,6 +107,7 @@
     <Compile Include="Mvc\ControllerRoute.cs" />
     <Compile Include="Routing\RegexRoute.cs" />
     <None Include="packages.config" />
+    <Compile Include="Routing\StaticContentRoute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

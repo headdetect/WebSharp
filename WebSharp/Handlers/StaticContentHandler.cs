@@ -40,5 +40,15 @@ namespace WebSharp.Handlers
             response.Body = File.OpenRead(Path.Combine(BaseDirectory, path));
             response.ContentType = HttpServer.GetContentTypeForExtension(Path.GetExtension(path).Substring(1));
         }
+
+        public bool CanResolve(IRequest request)
+        {
+            var parts = request.Uri.LocalPath.Split(Path.DirectorySeparatorChar);
+            if (parts.Any(p => p == ".."))
+                return false;
+            if (!File.Exists(Path.Combine(BaseDirectory, request.Uri.LocalPath)))
+                return false;
+            return true;
+        }
     }
 }
