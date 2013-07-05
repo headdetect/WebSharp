@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSharp", "WebSharp\WebSharp.csproj", "{52F6D83C-5D34-43AC-9249-ABB9471432C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSharp.MVC", "WebSharp.MVC\WebSharp.MVC.csproj", "{87E9AFC2-B2CE-4214-AFEE-55BCF5F8254B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{52F6D83C-5D34-43AC-9249-ABB9471432C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52F6D83C-5D34-43AC-9249-ABB9471432C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52F6D83C-5D34-43AC-9249-ABB9471432C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87E9AFC2-B2CE-4214-AFEE-55BCF5F8254B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87E9AFC2-B2CE-4214-AFEE-55BCF5F8254B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87E9AFC2-B2CE-4214-AFEE-55BCF5F8254B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87E9AFC2-B2CE-4214-AFEE-55BCF5F8254B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = WebSharp\WebSharp.csproj
