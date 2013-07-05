@@ -91,9 +91,6 @@
     <Compile Include="Exceptions\HttpUnsupportedMediaTypeException.cs" />
     <Compile Include="Handlers\RazorHandler.cs" />
     <Compile Include="Handlers\StaticContentHandler.cs" />
-    <Compile Include="Mvc\ActionResult.cs" />
-    <Compile Include="Mvc\Controller.cs" />
-    <Compile Include="Mvc\ViewResult.cs" />
     <Compile Include="RazorBase.cs" />
     <Compile Include="RazorHelper.cs" />
     <Compile Include="Routing\HttpRouter.cs" />
@@ -101,7 +98,6 @@
     <Compile Include="HttpService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routing\IRouteMapper.cs" />
-    <Compile Include="Mvc\ControllerRoute.cs" />
     <Compile Include="Routing\RegexRoute.cs" />
     <Compile Include="Routing\StaticContentRoute.cs" />
   </ItemGroup>
