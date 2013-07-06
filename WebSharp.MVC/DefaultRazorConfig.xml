@@ -33,6 +33,6 @@
   </namespaces>
 
   <contentProviders>
-    <add type="Xipton.Razor.Core.ContentProvider.FileContentProvider" rootFolder="./Views" />
+    <add type="Xipton.Razor.Core.ContentProvider.FileContentProvider" rootFolder="./Views/" />
   </contentProviders>
 </xipton.razor>

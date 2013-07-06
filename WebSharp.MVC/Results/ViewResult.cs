@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Dynamic;
 using Griffin.Networking.Protocol.Http.Protocol;
 using System.IO;
@@ -6,6 +7,8 @@ using Xipton.Razor;
 using System.Reflection;
 using Xipton.Razor.Config;
 using System.Web.Razor;
+using WebSharp.Exceptions;
+using Xipton.Razor.Core.ContentProvider;
 
 namespace WebSharp.MVC
 {
@@ -17,11 +20,11 @@ namespace WebSharp.MVC
                 Razor = new RazorMachine(stream.ReadToEnd());
         }
 
-        /// <summary>
-        /// When set to true, views will be compiled and cached. This will improve performance, but live updates will require an
-        /// application restart.
-        /// </summary>
-        public static bool CompileViews = false;
+        public static void RegisterLayout(string path)
+        {
+
+        }
+
         public static string ViewBase = "Views";
         private static RazorMachine Razor { get; set; }
 
@@ -41,15 +44,11 @@ namespace WebSharp.MVC
             response.ContentType = "text/html";
             var writer = new StreamWriter(response.Body);
             var path = ResolveView(View);
+            if (path == null)
+                throw new HttpNotFoundException("Requested view not found.");
             string result;
 
-            if (CompileViews)
-            {
-                Razor.RegisterTemplate(path, File.ReadAllText(path));
-                result = Razor.ExecuteUrl(path, null, null, false, true).ToString();
-            }
-            else
-                result = Razor.Execute(File.ReadAllText(Path.Combine(".", ViewBase, Controller.Name, path)), Model, Controller.ViewBag, false, true).ToString();
+            result = (string)Razor.ExecuteUrl(path, Model, Controller.ViewBag, false, true).ToString();
 
             writer.Write(result);
             writer.Flush();
@@ -57,7 +56,11 @@ namespace WebSharp.MVC
 
         private string ResolveView(string view)
         {
-            return view;
+            if (File.Exists(Path.Combine(".", ViewBase, Controller.Name, view)))
+                return Path.Combine(Controller.Name, view);
+            if (File.Exists(Path.Combine(".", ViewBase, Controller.Name, view)))
+                return Path.Combine(".", "Shared", view);
+            return null;
         }
     }
 }

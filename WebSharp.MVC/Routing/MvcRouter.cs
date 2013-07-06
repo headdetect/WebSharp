@@ -135,7 +135,7 @@ namespace WebSharp.MVC
             object[] parameters;
             var action = ResolveAction(controller, request, values, out parameters);
             controller.Request = request; controller.Response = response;
-            controller.ViewBag = new ExpandoObject();
+            controller.ViewBag = new DynamicViewBag();
             var result = (ActionResult)action.Invoke(controller, parameters);
             result.HandleRequest(request, response);
         }
