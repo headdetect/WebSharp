@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-    public class HttpRequestedRangeNotSatisfiableException : HttpException
-    {
-        public override int StatusCode
-        {
-            get { return 416; }
-        }
+	public class HttpRequestedRangeNotSatisfiableException : HttpException
+	{
+	    public override int StatusCode
+	    {
+	        get { return 416; }
+	    }
 
-        public HttpRequestedRangeNotSatisfiableException() : base()
-        {
-        }
+	    public HttpRequestedRangeNotSatisfiableException() : base()
+	    {
+	    }
 
-        public HttpRequestedRangeNotSatisfiableException(string message) : base(message)
-        {
-        }
-    }
+	    public HttpRequestedRangeNotSatisfiableException(string message) : base(message)
+	    {
+	    }
+	}
 }

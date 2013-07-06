@@ -7,9 +7,9 @@ using Griffin.Networking.Protocol.Http.Protocol;
 
 namespace WebSharp.Routing
 {
-    public interface IRouteMapper
-    {
-        bool Match(IRequest request);
-        void Execute(IRequest request, IResponse response);
-    }
+	public interface IRouteMapper
+	{
+	    bool Match(IRequest request);
+	    void Execute(IRequest request, IResponse response);
+	}
 }

@@ -2,11 +2,11 @@ using System;
 
 namespace WebSharp.MVC
 {
-    public class MyClass
-    {
-        public MyClass()
-        {
-        }
-    }
+	public class MyClass
+	{
+	    public MyClass()
+	    {
+	    }
+	}
 }
 

@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-    public class HttpNotFoundException : HttpException
-    {
-        public override int StatusCode
-        {
-            get { return 404; }
-        }
+	public class HttpNotFoundException : HttpException
+	{
+	    public override int StatusCode
+	    {
+	        get { return 404; }
+	    }
 
-        public HttpNotFoundException() : base()
-        {
-        }
+	    public HttpNotFoundException() : base()
+	    {
+	    }
 
-        public HttpNotFoundException(string message) : base(message)
-        {
-        }
-    }
+	    public HttpNotFoundException(string message) : base(message)
+	    {
+	    }
+	}
 }

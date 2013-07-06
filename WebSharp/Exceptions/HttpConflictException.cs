@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-    public class HttpConflictException : HttpException
-    {
-        public override int StatusCode
-        {
-            get { return 409; }
-        }
+	public class HttpConflictException : HttpException
+	{
+	    public override int StatusCode
+	    {
+	        get { return 409; }
+	    }
 
-        public HttpConflictException() : base()
-        {
-        }
+	    public HttpConflictException() : base()
+	    {
+	    }
 
-        public HttpConflictException(string message) : base(message)
-        {
-        }
-    }
+	    public HttpConflictException(string message) : base(message)
+	    {
+	    }
+	}
 }

@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-    public class HttpPaymentRequiredException : HttpException
-    {
-        public override int StatusCode
-        {
-            get { return 402; }
-        }
+	public class HttpPaymentRequiredException : HttpException
+	{
+	    public override int StatusCode
+	    {
+	        get { return 402; }
+	    }
 
-        public HttpPaymentRequiredException() : base()
-        {
-        }
+	    public HttpPaymentRequiredException() : base()
+	    {
+	    }
 
-        public HttpPaymentRequiredException(string message) : base(message)
-        {
-        }
-    }
+	    public HttpPaymentRequiredException(string message) : base(message)
+	    {
+	    }
+	}
 }
