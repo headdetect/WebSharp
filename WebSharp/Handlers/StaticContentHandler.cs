@@ -29,7 +29,7 @@ namespace WebSharp.Handlers
             if (!File.Exists(Path.Combine(BaseDirectory, path)))
                 throw new HttpNotFoundException("The requested static content was not found.");
             response.Body = File.OpenRead(Path.Combine(BaseDirectory, path));
-            response.ContentType = HttpServer.GetContentTypeForExtension(Path.GetExtension(request.Uri.LocalPath));
+            response.ContentType = HttpServer.GetContentTypeForExtension(Path.GetExtension(request.Uri.LocalPath).Substring(1));
         }
 
         public void Serve(string path, IRequest request, IResponse response)

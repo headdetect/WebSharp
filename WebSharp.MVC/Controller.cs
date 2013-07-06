@@ -23,8 +23,10 @@ namespace WebSharp.MVC
             return new JsonResult(data);
         }
 
-        public ViewResult View(string view, object model = null)
+        public ViewResult View(string view = null, object model = null)
         {
+            if (view == null)
+                view = Name + ".cshtml";
             return new ViewResult(view, this, model);
         }
     }
