@@ -13,8 +13,8 @@ namespace WebSharp.MVC
     {
         static ViewResult()
         {
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("WebSharp.MVC.DefaultRazorConfig.xml");
-            Razor = new RazorMachine();
+            using (var stream = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("WebSharp.MVC.DefaultRazorConfig.xml")))
+                Razor = new RazorMachine(stream.ReadToEnd());
         }
 
         /// <summary>
@@ -22,13 +22,18 @@ namespace WebSharp.MVC
         /// application restart.
         /// </summary>
         public static bool CompileViews = false;
+        public static string ViewBase = "Views";
         private static RazorMachine Razor { get; set; }
 
         public string View { get; set; }
         public object Model { get; set; }
+        public Controller Controller { get; set; }
 
-        public ViewResult(string view, object model = null)
+        public ViewResult(string view, Controller controller, object model = null)
         {
+            View = view;
+            Model = model;
+            Controller = controller;
         }
 
         public override void HandleRequest(IRequest request, IResponse response)
@@ -44,7 +49,7 @@ namespace WebSharp.MVC
                 result = Razor.ExecuteUrl(path, null, null, false, true).ToString();
             }
             else
-                result = Razor.Execute(File.ReadAllText(path), Model, new ExpandoObject(), false, true).ToString();
+                result = Razor.Execute(File.ReadAllText(Path.Combine(".", ViewBase, Controller.Name, path)), Model, Controller.ViewBag, false, true).ToString();
 
             writer.Write(result);
             writer.Flush();

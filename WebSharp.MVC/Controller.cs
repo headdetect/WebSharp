@@ -1,5 +1,6 @@
 using System;
 using Griffin.Networking.Protocol.Http.Protocol;
+using System.Dynamic;
 
 namespace WebSharp.MVC
 {
@@ -7,6 +8,7 @@ namespace WebSharp.MVC
     {
         public IRequest Request { get; set; }
         public IResponse Response { get; set; }
+        public dynamic ViewBag { get; set; }
         public string Name { get; set; }
 
         public Controller()
@@ -16,9 +18,14 @@ namespace WebSharp.MVC
                 Name = Name.Remove(Name.Length - "Controller".Length);
         }
 
+        public JsonResult Json(object data)
+        {
+            return new JsonResult(data);
+        }
+
         public ViewResult View(string view, object model = null)
         {
-            return new ViewResult(view, model);
+            return new ViewResult(view, this, model);
         }
     }
 }

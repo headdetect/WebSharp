@@ -14,9 +14,9 @@
   <references>
     <clear/>
     <add reference="mscorlib.dll"/>
-    <add reference="system.dll"/>
-    <add reference="system.core.dll"/>
-    <add reference="microsoft.csharp.dll"/>
+    <add reference="System.dll"/>
+    <add reference="Microsoft.CSharp.dll"/>
+    <add reference="System.Core.dll"/>
     <add reference="*.dll"/>
     <add reference="*.exe"/>
   </references>

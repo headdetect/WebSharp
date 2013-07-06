@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System.Dynamic" />
     <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -67,6 +68,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DefaultRazorConfig.xml" />
+    <EmbeddedResource Include="DefaultRazorConfig.xml" />
   </ItemGroup>
 </Project>
