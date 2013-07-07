@@ -12,6 +12,7 @@ using Griffin.Networking.Protocol.Http.Protocol;
 using WebSharp.Exceptions;
 using HttpException = WebSharp.Exceptions.HttpException;
 using GHttpException = Griffin.Networking.Protocol.Http.HttpException;
+using Griffin.Networking.Protocol.Http.Services.BodyDecoders;
 
 namespace WebSharp
 {
@@ -48,6 +49,11 @@ namespace WebSharp
             {
                 try
                 {
+                    if (request.Method == "POST")
+                    {
+                        var decoder = new CompositeBodyDecoder();
+                        decoder.Decode(request);
+                    }
                     Request(request, response);
                 }
                 catch (Exception e)

@@ -112,6 +112,29 @@ namespace WebSharp.MVC
                         }
                         matches++;
                     }
+                    if (request.Method == "POST" && request.Form != null)
+                    {
+                        if (request.Form.Any(q => q.Name.Equals(name, CaseInsensitive ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture)))
+                        {
+                            try
+                            {
+                                var value = request.Form.First(
+                                    q => q.Name.Equals(name, CaseInsensitive ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture)).Value;
+                                if (parameter.ParameterType == typeof(bool))
+                                {
+                                    if (value.ToUpper() == "ON" || value.ToUpper() == "OFF")
+                                        value = value.ToUpper() == "ON" ? "true" : "false";
+                                }
+                                actionParameters[matches] = Convert.ChangeType(value, parameter.ParameterType);
+                            }
+                            catch
+                            {
+                                matches = -1;
+                                break;
+                            }
+                            matches++;
+                        }
+                    }
                 }
                 if (matches == parameters.Length)
                     return method;
@@ -207,6 +230,11 @@ namespace WebSharp.MVC
                         if (i >= parts.Length || parts[i] != RouteParts[i])
                             return null;
                     }
+                }
+                foreach (var item in Defaults)
+                {
+                    if (!values.ContainsKey(item.Key))
+                        values.Add(item.Key, Convert.ToString(item.Value));
                 }
                 return values;
             }
