@@ -48,11 +48,16 @@
     <Reference Include="System.Dynamic" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\lib\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Routing\" />
     <Folder Include="Results\" />
+    <Folder Include="Html\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller.cs" />
@@ -61,6 +66,8 @@
     <Compile Include="Routing\MvcRouter.cs" />
     <Compile Include="Results\ViewResult.cs" />
     <Compile Include="DynamicViewBag.cs" />
+    <Compile Include="Html\HtmlLink.cs" />
+    <Compile Include="Html\HtmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebSharp\WebSharp.csproj">
