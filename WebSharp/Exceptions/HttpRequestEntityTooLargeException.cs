@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-	public class HttpRequestEntityTooLargeException : HttpException
-	{
-	    public override int StatusCode
-	    {
-	        get { return 413; }
-	    }
+    public class HttpRequestEntityTooLargeException : HttpException
+    {
+        public override int StatusCode
+        {
+            get { return 413; }
+        }
 
-	    public HttpRequestEntityTooLargeException() : base()
-	    {
-	    }
+        public HttpRequestEntityTooLargeException() : base()
+        {
+        }
 
-	    public HttpRequestEntityTooLargeException(string message) : base(message)
-	    {
-	    }
-	}
+        public HttpRequestEntityTooLargeException(string message) : base(message)
+        {
+        }
+    }
 }

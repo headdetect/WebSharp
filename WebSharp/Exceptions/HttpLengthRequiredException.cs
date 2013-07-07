@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-	public class HttpLengthRequiredException : HttpException
-	{
-	    public override int StatusCode
-	    {
-	        get { return 411; }
-	    }
+    public class HttpLengthRequiredException : HttpException
+    {
+        public override int StatusCode
+        {
+            get { return 411; }
+        }
 
-	    public HttpLengthRequiredException() : base()
-	    {
-	    }
+        public HttpLengthRequiredException() : base()
+        {
+        }
 
-	    public HttpLengthRequiredException(string message) : base(message)
-	    {
-	    }
-	}
+        public HttpLengthRequiredException(string message) : base(message)
+        {
+        }
+    }
 }

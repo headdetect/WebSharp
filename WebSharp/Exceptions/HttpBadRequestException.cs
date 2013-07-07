@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-	public class HttpBadRequestException : HttpException
-	{
-	    public override int StatusCode
-	    {
-	        get { return 400; }
-	    }
+    public class HttpBadRequestException : HttpException
+    {
+        public override int StatusCode
+        {
+            get { return 400; }
+        }
 
-	    public HttpBadRequestException() : base()
-	    {
-	    }
+        public HttpBadRequestException() : base()
+        {
+        }
 
-	    public HttpBadRequestException(string message) : base(message)
-	    {
-	    }
-	}
+        public HttpBadRequestException(string message) : base(message)
+        {
+        }
+    }
 }

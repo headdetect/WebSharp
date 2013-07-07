@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-	public class HttpMethodNotAllowedException : HttpException
-	{
-	    public override int StatusCode
-	    {
-	        get { return 405; }
-	    }
+    public class HttpMethodNotAllowedException : HttpException
+    {
+        public override int StatusCode
+        {
+            get { return 405; }
+        }
 
-	    public HttpMethodNotAllowedException() : base()
-	    {
-	    }
+        public HttpMethodNotAllowedException() : base()
+        {
+        }
 
-	    public HttpMethodNotAllowedException(string message) : base(message)
-	    {
-	    }
-	}
+        public HttpMethodNotAllowedException(string message) : base(message)
+        {
+        }
+    }
 }

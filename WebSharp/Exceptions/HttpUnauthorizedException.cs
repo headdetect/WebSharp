@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-	public class HttpUnauthorizedException : HttpException
-	{
-	    public override int StatusCode
-	    {
-	        get { return 401; }
-	    }
+    public class HttpUnauthorizedException : HttpException
+    {
+        public override int StatusCode
+        {
+            get { return 401; }
+        }
 
-	    public HttpUnauthorizedException() : base()
-	    {
-	    }
+        public HttpUnauthorizedException() : base()
+        {
+        }
 
-	    public HttpUnauthorizedException(string message) : base(message)
-	    {
-	    }
-	}
+        public HttpUnauthorizedException(string message) : base(message)
+        {
+        }
+    }
 }

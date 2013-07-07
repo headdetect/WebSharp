@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-	public class HttpGoneException : HttpException
-	{
-	    public override int StatusCode
-	    {
-	        get { return 410; }
-	    }
+    public class HttpGoneException : HttpException
+    {
+        public override int StatusCode
+        {
+            get { return 410; }
+        }
 
-	    public HttpGoneException() : base()
-	    {
-	    }
+        public HttpGoneException() : base()
+        {
+        }
 
-	    public HttpGoneException(string message) : base(message)
-	    {
-	    }
-	}
+        public HttpGoneException(string message) : base(message)
+        {
+        }
+    }
 }

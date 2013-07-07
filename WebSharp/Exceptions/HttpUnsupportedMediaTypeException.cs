@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-	public class HttpUnsupportedMediaTypeException : HttpException
-	{
-	    public override int StatusCode
-	    {
-	        get { return 415; }
-	    }
+    public class HttpUnsupportedMediaTypeException : HttpException
+    {
+        public override int StatusCode
+        {
+            get { return 415; }
+        }
 
-	    public HttpUnsupportedMediaTypeException() : base()
-	    {
-	    }
+        public HttpUnsupportedMediaTypeException() : base()
+        {
+        }
 
-	    public HttpUnsupportedMediaTypeException(string message) : base(message)
-	    {
-	    }
-	}
+        public HttpUnsupportedMediaTypeException(string message) : base(message)
+        {
+        }
+    }
 }

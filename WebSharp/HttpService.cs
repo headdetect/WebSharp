@@ -12,40 +12,40 @@ using Griffin.Networking.Servers;
 
 namespace WebSharp
 {
-	internal class HttpServiceWrappper : HttpService
-	{
-	    public class ServiceFactory : IServiceFactory
-	    {
-	        public RequestHandler Request;
+    internal class HttpServiceWrappper : HttpService
+    {
+        public class ServiceFactory : IServiceFactory
+        {
+            public RequestHandler Request;
 
-	        public ServiceFactory(RequestHandler request)
-	        {
-	            Request = request;
-	        }
+            public ServiceFactory(RequestHandler request)
+            {
+                Request = request;
+            }
 
-	        public INetworkService CreateClient(EndPoint remoteEndPoint)
-	        {
-	            return new HttpServiceWrappper(Request);
-	        }
-	    }
+            public INetworkService CreateClient(EndPoint remoteEndPoint)
+            {
+                return new HttpServiceWrappper(Request);
+            }
+        }
 
-	    private static readonly BufferSliceStack stack = new BufferSliceStack(50, 32000);
+        private static readonly BufferSliceStack stack = new BufferSliceStack(50, 32000);
 
-	    public delegate IResponse RequestHandler(IRequest request);
-	    public RequestHandler Request;
+        public delegate IResponse RequestHandler(IRequest request);
+        public RequestHandler Request;
 
-	    public HttpServiceWrappper(RequestHandler request) : base(stack)
-	    {
-	        Request = request;
-	    }
+        public HttpServiceWrappper(RequestHandler request) : base(stack)
+        {
+            Request = request;
+        }
 
-	    public override void Dispose()
-	    {
-	    }
+        public override void Dispose()
+        {
+        }
 
-	    public override void OnRequest(IRequest request)
-	    {
-	        Send(Request(request));
-	    }
-	}
+        public override void OnRequest(IRequest request)
+        {
+            Send(Request(request));
+        }
+    }
 }

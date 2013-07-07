@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-	public class HttpImATeapotException : HttpException
-	{
-	    public override int StatusCode
-	    {
-	        get { return 418; }
-	    }
+    public class HttpImATeapotException : HttpException
+    {
+        public override int StatusCode
+        {
+            get { return 418; }
+        }
 
-	    public HttpImATeapotException() : base()
-	    {
-	    }
+        public HttpImATeapotException() : base()
+        {
+        }
 
-	    public HttpImATeapotException(string message) : base(message)
-	    {
-	    }
-	}
+        public HttpImATeapotException(string message) : base(message)
+        {
+        }
+    }
 }

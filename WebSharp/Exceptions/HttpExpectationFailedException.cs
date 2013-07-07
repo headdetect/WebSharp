@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-	public class HttpExpectationFailedException : HttpException
-	{
-	    public override int StatusCode
-	    {
-	        get { return 417; }
-	    }
+    public class HttpExpectationFailedException : HttpException
+    {
+        public override int StatusCode
+        {
+            get { return 417; }
+        }
 
-	    public HttpExpectationFailedException() : base()
-	    {
-	    }
+        public HttpExpectationFailedException() : base()
+        {
+        }
 
-	    public HttpExpectationFailedException(string message) : base(message)
-	    {
-	    }
-	}
+        public HttpExpectationFailedException(string message) : base(message)
+        {
+        }
+    }
 }

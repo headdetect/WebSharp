@@ -15,88 +15,88 @@ using GHttpException = Griffin.Networking.Protocol.Http.HttpException;
 
 namespace WebSharp
 {
-	public class HttpServer
-	{
-	    internal MessagingServer Server { get; set; }
+    public class HttpServer
+    {
+        internal MessagingServer Server { get; set; }
 
-	    public delegate void RequestHandler(IRequest request, IResponse response); // TODO: Use our own wrappers
-	    public RequestHandler Request;
+        public delegate void RequestHandler(IRequest request, IResponse response); // TODO: Use our own wrappers
+        public RequestHandler Request;
 
-	    public HttpServer()
-	    {
-	        Server = new MessagingServer(new HttpServiceWrappper.ServiceFactory(ListenerCallback),
-	            new MessagingServerConfiguration(new HttpMessageFactory()));
-	    }
+        public HttpServer()
+        {
+            Server = new MessagingServer(new HttpServiceWrappper.ServiceFactory(ListenerCallback),
+                new MessagingServerConfiguration(new HttpMessageFactory()));
+        }
 
-	    public void Start(IPEndPoint endPoint)
-	    {
-	        Server.Start(endPoint);
-	    }
+        public void Start(IPEndPoint endPoint)
+        {
+            Server.Start(endPoint);
+        }
 
-	    private IResponse ListenerCallback(IRequest request)
-	    {
-	        var response = request.CreateResponse(HttpStatusCode.OK, "OK");
-	        response.Body = new MemoryStream();
-	        if (Request == null)
-	        {
-	            response.ContentType = "text/plain";
-	            var writer = new StreamWriter(response.Body);
-	            writer.WriteLine("No request handler is registered with this HttpServer instance. Set HttpServer.Request to a RequestHandler delegate.");
-	            writer.Flush();
-	        }
-	        else
-	        {
-	            try
-	            {
-	                Request(request, response);
-	            }
-	            catch (Exception e)
-	            {
-	                HandleException(e, response);
-	            }
-	        }
-	        response.Body.Position = 0;
-	        return response;
-	    }
+        private IResponse ListenerCallback(IRequest request)
+        {
+            var response = request.CreateResponse(HttpStatusCode.OK, "OK");
+            response.Body = new MemoryStream();
+            if (Request == null)
+            {
+                response.ContentType = "text/plain";
+                var writer = new StreamWriter(response.Body);
+                writer.WriteLine("No request handler is registered with this HttpServer instance. Set HttpServer.Request to a RequestHandler delegate.");
+                writer.Flush();
+            }
+            else
+            {
+                try
+                {
+                    Request(request, response);
+                }
+                catch (Exception e)
+                {
+                    HandleException(e, response);
+                }
+            }
+            response.Body.Position = 0;
+            return response;
+        }
 
-	    private void HandleException(Exception e, IResponse response)
-	    {
-	        // TODO: Custom exception handlers
-	        response.ContentType = "text/plain";
-	        var writer = new StreamWriter(response.Body);
-	        writer.Write("An unhandled exception occured while processing this request: " +
-	            Environment.NewLine + e.ToString());
-	        writer.Flush();
-	        if (e is HttpException)
-	            response.StatusCode = (e as HttpException).StatusCode;
-	        else
-	            response.StatusCode = 500;
-	    }
+        private void HandleException(Exception e, IResponse response)
+        {
+            // TODO: Custom exception handlers
+            response.ContentType = "text/plain";
+            var writer = new StreamWriter(response.Body);
+            writer.Write("An unhandled exception occured while processing this request: " +
+                Environment.NewLine + e.ToString());
+            writer.Flush();
+            if (e is HttpException)
+                response.StatusCode = (e as HttpException).StatusCode;
+            else
+                response.StatusCode = 500;
+        }
 
-	    static HttpServer()
-	    {
-	        ContentTypes = new Dictionary<string, string>();
-	        SetContentType("png", "image/png");
-	        SetContentType("jpeg", "image/jpeg");
-	        SetContentType("txt", "text/plain");
-	        SetContentType("js", "text/javascript");
-	        SetContentType("css", "text/css");
-	        SetContentType("html", "text/html");
-	        SetContentType("mkv", "video/x-matroska");
-	        SetContentType("mp4", "video/mp4");
-	    }
+        static HttpServer()
+        {
+            ContentTypes = new Dictionary<string, string>();
+            SetContentType("png", "image/png");
+            SetContentType("jpeg", "image/jpeg");
+            SetContentType("txt", "text/plain");
+            SetContentType("js", "text/javascript");
+            SetContentType("css", "text/css");
+            SetContentType("html", "text/html");
+            SetContentType("mkv", "video/x-matroska");
+            SetContentType("mp4", "video/mp4");
+        }
 
-	    public static void SetContentType(string extension, string type)
-	    {
-	        ContentTypes[extension.ToUpper()] = type;
-	    }
+        public static void SetContentType(string extension, string type)
+        {
+            ContentTypes[extension.ToUpper()] = type;
+        }
 
-	    private static Dictionary<string, string> ContentTypes { get; set; }
-	    public static string GetContentTypeForExtension(string extension)
-	    {
-	        if (!ContentTypes.ContainsKey(extension.ToUpper()))
-	            return null; // TODO: Should we do this?
-	        return ContentTypes[extension.ToUpper()];
-	    }
-	}
+        private static Dictionary<string, string> ContentTypes { get; set; }
+        public static string GetContentTypeForExtension(string extension)
+        {
+            if (!ContentTypes.ContainsKey(extension.ToUpper()))
+                return null; // TODO: Should we do this?
+            return ContentTypes[extension.ToUpper()];
+        }
+    }
 }

@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace WebSharp.Exceptions
 {
-	public class HttpProxyAuthenticationRequiredException : HttpException
-	{
-	    public override int StatusCode
-	    {
-	        get { return 407; }
-	    }
+    public class HttpProxyAuthenticationRequiredException : HttpException
+    {
+        public override int StatusCode
+        {
+            get { return 407; }
+        }
 
-	    public HttpProxyAuthenticationRequiredException() : base()
-	    {
-	    }
+        public HttpProxyAuthenticationRequiredException() : base()
+        {
+        }
 
-	    public HttpProxyAuthenticationRequiredException(string message) : base(message)
-	    {
-	    }
-	}
+        public HttpProxyAuthenticationRequiredException(string message) : base(message)
+        {
+        }
+    }
 }
