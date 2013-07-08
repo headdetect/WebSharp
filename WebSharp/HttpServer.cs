@@ -20,13 +20,15 @@ namespace WebSharp
     {
         internal MessagingServer Server { get; set; }
 
-        public delegate void RequestHandler(IRequest request, IResponse response); // TODO: Use our own wrappers
+        public delegate void RequestHandler(IRequest request, IResponse response);
         public RequestHandler Request;
+        public bool LogRequests { get; set; }
 
         public HttpServer()
         {
             Server = new MessagingServer(new HttpServiceWrappper.ServiceFactory(ListenerCallback),
                 new MessagingServerConfiguration(new HttpMessageFactory()));
+            LogRequests = false;
         }
 
         public void Start(IPEndPoint endPoint)
@@ -54,15 +56,35 @@ namespace WebSharp
                         var decoder = new CompositeBodyDecoder();
                         decoder.Decode(request);
                     }
+                    if (LogRequests)
+                        Log(request);
                     Request(request, response);
+                    if (LogRequests)
+                        Log(response);
                 }
                 catch (Exception e)
                 {
                     HandleException(e, response);
+                    if (LogRequests)
+                        Console.Write(e);
                 }
             }
             response.Body.Position = 0;
             return response;
+        }
+
+        void Log(IRequest request)
+        {
+            Console.WriteLine(request.Method + " " + request.Uri);
+            foreach (var header in request.Headers)
+                Console.WriteLine(" " + header.Name + ": " + header.Value);
+        }
+
+        void Log(IResponse response)
+        {
+            Console.WriteLine("Response: " + response.StatusCode + ": " + response.StatusDescription);
+            foreach (var header in response.Headers)
+                Console.WriteLine(" " + header.Name + ": " + header.Value);
         }
 
         private void HandleException(Exception e, IResponse response)
@@ -90,6 +112,12 @@ namespace WebSharp
             SetContentType("html", "text/html");
             SetContentType("mkv", "video/x-matroska");
             SetContentType("mp4", "video/mp4");
+            SetContentType("ogv", "video/ogg");
+            SetContentType("webm", "video/webm");
+            SetContentType("acc", "audio/acc");
+            SetContentType("mp3", "audio/mpeg");
+            SetContentType("oga", "audio/ogg");
+            SetContentType("ogg", "audio/ogg");
         }
 
         public static void SetContentType(string extension, string type)

@@ -68,6 +68,7 @@
     <Compile Include="DynamicViewBag.cs" />
     <Compile Include="Html\HtmlLink.cs" />
     <Compile Include="Html\HtmlHelper.cs" />
+    <Compile Include="Results\StringResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebSharp\WebSharp.csproj">
