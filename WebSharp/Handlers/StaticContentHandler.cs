@@ -33,16 +33,18 @@ namespace WebSharp.Handlers
             if (Path.IsPathRooted(path)) path = path.Substring(path.IndexOf(Path.DirectorySeparatorChar) + 1);
             if (!File.Exists(Path.Combine(BaseDirectory, path)))
                 throw new HttpNotFoundException("The requested static content was not found.");
-            //var stream = new StreamWrapper(Path.Combine(BaseDirectory, path), FileMode.Open);
-            var stream = File.OpenRead(Path.Combine(BaseDirectory, path));
+
+            //var stream = File.OpenRead(Path.Combine(BaseDirectory, path));
+            var stream = new StreamWrapper(Path.Combine(BaseDirectory, path), FileMode.Open);
             response.ContentType = HttpServer.GetContentTypeForExtension(Path.GetExtension(path).Substring(1));
             response.AddHeader("Accept-Ranges", "bytes");
+
             // Handle ranges
             long length = stream.Length;
             if (request.Headers.Any(h => h.Name == "Range"))
             {
-                response.StatusCode = 206;
-                response.StatusDescription = "Partial Content";
+                //response.StatusCode = 206; // Breaks things for some unknown reason, quite infuriating
+                //response.StatusDescription = "Partial Content";
                 var range = request.Headers["Range"].Value;
                 var type = range.Remove(range.IndexOf("="));
                 if (type != "bytes")
@@ -58,12 +60,11 @@ namespace WebSharp.Handlers
                 if (!long.TryParse(rangeParts[1], out end))
                     end = length;
                 length = end - start;
-                response.AddHeader("Content-Range", string.Format("bytes {0}-{1}/{2}", start, end, stream.Length));
+                response.AddHeader("Content-Range", string.Format("bytes {0}-{1}/{2}", start, end, length));
                 stream.Seek(start, SeekOrigin.Begin);
-                response.KeepAlive = false;
             }
-            response.ContentLength = (int)length;
-            stream.CopyTo(response.Body);
+            stream._Length = length;
+            response.Body = stream;
         }
 
         public bool CanResolve(IRequest request)
@@ -78,10 +79,9 @@ namespace WebSharp.Handlers
             return true;
         }
 
-        // Used to limit the length of a stream for HTML5 audio/video playback
         private class StreamWrapper : FileStream
         {
-            public int _Length { get; set; }
+            public long _Length { get; set; }
 
             public override long Length
             {
@@ -91,8 +91,17 @@ namespace WebSharp.Handlers
                 }
             }
 
+            public override int Read(byte[] array, int offset, int count)
+            {
+                if (Position + count <= _Length)
+                    return base.Read(array, offset, count);
+                else
+                    return base.Read(array, offset, (int)(_Length - (Position + count)));
+            }
+
             public StreamWrapper(string path, FileMode mode) : base(path, mode)
             {
+                _Length = base.Length;
             }
         }
     }
