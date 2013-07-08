@@ -51,7 +51,7 @@ namespace WebSharp
             {
                 try
                 {
-                    if (request.Method == "POST")
+                    if (request.Method == "POST" && !string.IsNullOrEmpty(request.ContentType))
                     {
                         var decoder = new CompositeBodyDecoder();
                         decoder.Decode(request);
