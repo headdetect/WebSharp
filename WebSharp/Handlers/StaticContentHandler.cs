@@ -34,8 +34,7 @@ namespace WebSharp.Handlers
             if (!File.Exists(Path.Combine(BaseDirectory, path)))
                 throw new HttpNotFoundException("The requested static content was not found.");
 
-            //var stream = File.OpenRead(Path.Combine(BaseDirectory, path));
-            var stream = new StreamWrapper(Path.Combine(BaseDirectory, path), FileMode.Open);
+            var stream = File.OpenRead(Path.Combine(BaseDirectory, path));
             response.ContentType = HttpServer.GetContentTypeForExtension(Path.GetExtension(path).Substring(1));
             response.AddHeader("Accept-Ranges", "bytes");
 
@@ -63,8 +62,11 @@ namespace WebSharp.Handlers
                 response.AddHeader("Content-Range", string.Format("bytes {0}-{1}/{2}", start, end, length));
                 stream.Seek(start, SeekOrigin.Begin);
             }
-            stream._Length = length;
-            response.Body = stream;
+            //stream._Length = length;
+            response.Body = new MemoryStream();
+            stream.CopyTo(response.Body);
+            stream.Close();
+            response.Body.Seek(0, SeekOrigin.Begin);
         }
 
         public bool CanResolve(IRequest request)
@@ -77,32 +79,6 @@ namespace WebSharp.Handlers
             if (!File.Exists(Path.Combine(BaseDirectory, path)))
                 return false;
             return true;
-        }
-
-        private class StreamWrapper : FileStream
-        {
-            public long _Length { get; set; }
-
-            public override long Length
-            {
-                get
-                {
-                    return _Length;
-                }
-            }
-
-            public override int Read(byte[] array, int offset, int count)
-            {
-                if (Position + count <= _Length)
-                    return base.Read(array, offset, count);
-                else
-                    return base.Read(array, offset, (int)(_Length - (Position + count)));
-            }
-
-            public StreamWrapper(string path, FileMode mode) : base(path, mode)
-            {
-                _Length = base.Length;
-            }
         }
     }
 }
