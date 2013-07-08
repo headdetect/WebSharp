@@ -75,7 +75,7 @@ namespace WebSharp
 
         void Log(IRequest request)
         {
-            Console.WriteLine(request.Method + " " + request.Uri);
+            Console.WriteLine(request.Method + " " + request.Uri + " [" + request.RemoteEndPoint + "]");
             foreach (var header in request.Headers)
                 Console.WriteLine(" " + header.Name + ": " + header.Value);
         }
