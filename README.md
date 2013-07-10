@@ -41,10 +41,12 @@ router.AddRoute(new RegexRoute("/(?<name>[A-Za-z ]+)/?", (context, request, resp
 }));
 
 // WebSharp also includes static content
-var staticContent = new StaticContentHandler(Path.Combine(Directory.GetCurrentDirectory(), "content"));
-// This static route helps the static content coorperate with other routes. It'll only match on routes that
-// go to files the static content handler is aware of. This way, you could have "/style.css" resolve to
-// static content, and "/edit" resolve to something else, under the same "/" root directory.
+var staticContent = new StaticContentHandler(
+    Path.Combine(Directory.GetCurrentDirectory(), "content"));
+// This static route helps the static content coorperate with other routes. It'll only
+// match on routes that go to files the static content handler is aware of. This way,
+// you could have "/style.css" resolve to static content, and "/edit" resolve to
+// something else, under the same "/" root directory.
 var staticRoute = new StaticContentRoute(staticContent);
 router.AddRoute(staticRoute);
 
