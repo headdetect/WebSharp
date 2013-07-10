@@ -31,7 +31,7 @@ httpd.Request = router.Route;
 // web server.
 
 // Says "Hello, user!" where "user" comes from GET /user
-router.AddRoute(new RegexRoute("/(?<name>[A-Za-z ]+)/?", (context, request, response) =>
+router.AddRoute(new RegexRoute("/(?<name>[A-Za-z ]+)", (context, request, response) =>
 {
     var writer = new StreamWriter(response.Body);
     // You can use context["group"] to grab named groups out of regex routes
