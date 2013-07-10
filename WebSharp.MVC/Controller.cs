@@ -1,6 +1,7 @@
 using System;
 using Griffin.Networking.Protocol.Http.Protocol;
 using System.Dynamic;
+using System.Diagnostics;
 
 namespace WebSharp.MVC
 {
@@ -26,7 +27,7 @@ namespace WebSharp.MVC
         public ViewResult View(string view = null, object model = null)
         {
             if (view == null)
-                view = Name + ".cshtml";
+                view = new StackFrame(1, true).GetMethod().Name + ".cshtml";
             return new ViewResult(view, this, model);
         }
     }
