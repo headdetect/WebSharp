@@ -45,18 +45,16 @@ namespace WebSharp.MVC
         public override void HandleRequest(IRequest request, IResponse response)
         {
             response.ContentType = "text/html";
-            using (var writer = new StreamWriter(response.Body))
-            {
-                var path = ResolveView(View);
-                if (path == null)
-                    throw new HttpNotFoundException(string.Format("Requested view not found. Looking for: {0}", Path.Combine(Controller.Name, View)));
-                string result;
+            var writer = new StreamWriter(response.Body);
+            var path = ResolveView(View);
+            if (path == null)
+                throw new HttpNotFoundException(string.Format("Requested view not found. Looking for: {0}", Path.Combine(Controller.Name, View)));
+            string result;
 
-                result = (string)Razor.ExecuteUrl(path, Model, Controller.ViewBag, false, true).ToString();
+            result = (string)Razor.ExecuteUrl(path, Model, Controller.ViewBag, false, true).ToString();
 
-                writer.Write(result);
-                writer.Flush();
-            }
+            writer.Write(result);
+            writer.Flush();
         }
 
         private string ResolveView(string view)
