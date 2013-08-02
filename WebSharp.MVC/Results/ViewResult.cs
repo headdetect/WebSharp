@@ -16,6 +16,9 @@ namespace WebSharp.MVC
     {
         static ViewResult()
         {
+            // Set defaults //
+            ViewBase = "Views";
+
             using (var stream = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("WebSharp.MVC.DefaultRazorConfig.xml")))
                 Razor = new RazorMachine(stream.ReadToEnd());
         }
@@ -25,8 +28,8 @@ namespace WebSharp.MVC
 
         }
 
-        public static string ViewBase = "Views";
-        private static RazorMachine Razor { get; set; }
+        public static string ViewBase { get; set; }
+        protected static RazorMachine Razor { get; set; }
 
         public string View { get; set; }
         public object Model { get; set; }
@@ -42,24 +45,24 @@ namespace WebSharp.MVC
         public override void HandleRequest(IRequest request, IResponse response)
         {
             response.ContentType = "text/html";
-            var writer = new StreamWriter(response.Body);
-            var path = ResolveView(View);
-            if (path == null)
-                throw new HttpNotFoundException("Requested view not found.");
-            string result;
+            using (var writer = new StreamWriter(response.Body))
+            {
+                var path = ResolveView(View);
+                if (path == null)
+                    throw new HttpNotFoundException(string.Format("Requested view not found. Looking for: {0}", Path.Combine(Controller.Name, View)));
+                string result;
 
-            result = (string)Razor.ExecuteUrl(path, Model, Controller.ViewBag, false, true).ToString();
+                result = (string)Razor.ExecuteUrl(path, Model, Controller.ViewBag, false, true).ToString();
 
-            writer.Write(result);
-            writer.Flush();
+                writer.Write(result);
+                writer.Flush();
+            }
         }
 
         private string ResolveView(string view)
         {
             if (File.Exists(Path.Combine(".", ViewBase, Controller.Name, view)))
                 return Path.Combine(Controller.Name, view);
-            if (File.Exists(Path.Combine(".", ViewBase, Controller.Name, view)))
-                return Path.Combine(".", "Shared", view);
             return null;
         }
     }
