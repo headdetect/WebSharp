@@ -27,10 +27,9 @@ namespace WebSharp.Handlers
 
         public void Serve(string path, IRequest request, IResponse response)
         {
-            var parts = request.Uri.LocalPath.Split(Path.DirectorySeparatorChar);
-            if (parts.Any(p => p == ".."))
+            if (request.Uri.Segments.Any(p => p == ".."))
                 throw new HttpForbiddenException("Disallowed characters in path");
-            if (Path.IsPathRooted(path)) path = path.Substring(path.IndexOf(Path.DirectorySeparatorChar) + 1);
+            if (Path.IsPathRooted(path)) path = path.Substring(path.IndexOfAny(new char[] { Path.DirectorySeparatorChar, '/', '\\' }) + 1);
             if (!File.Exists(Path.Combine(BaseDirectory, path)))
                 throw new HttpNotFoundException("The requested static content was not found.");
 
@@ -71,12 +70,12 @@ namespace WebSharp.Handlers
 
         public bool CanResolve(IRequest request)
         {
-            var parts = request.Uri.LocalPath.Split(Path.DirectorySeparatorChar);
-            if (parts.Any(p => p == ".."))
+            if (request.Uri.Segments.Any(p => p == ".."))
                 return false;
             var path = request.Uri.LocalPath;
-            if (Path.IsPathRooted(path)) path = path.Substring(path.IndexOf(Path.DirectorySeparatorChar) + 1);
-            if (!File.Exists(Path.Combine(BaseDirectory, path)))
+            if (Path.IsPathRooted(path)) path = path.Substring(path.IndexOfAny(new char[] { Path.DirectorySeparatorChar, '/', '\\' }) + 1);
+            string file = Path.Combine(BaseDirectory, path);
+            if (!File.Exists(file))
                 return false;
             return true;
         }
