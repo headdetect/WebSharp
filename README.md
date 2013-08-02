@@ -4,6 +4,8 @@ WebSharp is a .NET web framework that helps you make websites quickly and easily
 control over the stack. It's highly customizable and very lightweight, and it runs great on Windows, Linux,
 and Mac.
 
+Talk about it with us in #websharp on irc.freenode.net.
+
 ## Features
 
 * Built-in web server using Griffin.Networking
@@ -52,6 +54,9 @@ router.AddRoute(staticRoute);
 
 httpd.Start(new IPEndPoint(IPAddress.Any, 80));
 ```
+
+[staccato](https://github.com/SirCmpwn/staccato) is a full-blown web app that runs on WebSharp, if
+you want a more in-depth example.
 
 ## Contributing
 
