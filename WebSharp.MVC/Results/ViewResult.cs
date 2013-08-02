@@ -51,7 +51,7 @@ namespace WebSharp.MVC
                 throw new HttpNotFoundException(string.Format("Requested view not found. Looking for: {0}", Path.Combine(Controller.Name, View)));
             string result;
 
-            result = (string)Razor.ExecuteUrl(path, Model, Controller.ViewBag, false, true).ToString();
+            result = (string)Razor.ExecuteUrl(path.Replace('\\', '/'), Model, Controller.ViewBag, false, true).ToString();
 
             writer.Write(result);
             writer.Flush();
