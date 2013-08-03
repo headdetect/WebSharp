@@ -28,13 +28,9 @@ namespace WebSharp.Routing
 
         public void Route(IRequest request, IResponse response)
         {
-            foreach (var route in Routes)
-            {
-                if (route.Match(request))
-                {
-                    route.Execute(request, response);
-                    return;
-                }
+            foreach (var route in Routes.Where(route => route.Match(request))) {
+                route.Execute(request, response);
+                return;
             }
             if (MissingRoute != null)
                 MissingRoute(request, response);

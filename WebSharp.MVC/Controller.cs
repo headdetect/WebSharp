@@ -1,4 +1,5 @@
 using System;
+using Griffin.Networking.Protocol.Http.Implementation;
 using Griffin.Networking.Protocol.Http.Protocol;
 using System.Dynamic;
 using System.Diagnostics;
@@ -12,23 +13,107 @@ namespace WebSharp.MVC
         public dynamic ViewBag { get; set; }
         public string Name { get; set; }
 
-        public Controller()
+        protected Controller()
         {
             Name = GetType().Name;
             if (Name.EndsWith("Controller"))
                 Name = Name.Remove(Name.Length - "Controller".Length);
         }
 
-        public JsonResult Json(object data)
+
+        public ActionResult ViewOk(string template, object model = null)
         {
-            return new JsonResult(data);
+            return new ViewResult(this, template, model);
         }
 
-        public ViewResult View(string view = null, object model = null)
+        public ActionResult JsonOk(object data)
         {
-            if (view == null)
-                view = new StackFrame(1, true).GetMethod().Name + ".cshtml";
-            return new ViewResult(view, this, model);
+            return new JsonResult(Request, Response, data);
+        }
+
+        public ActionResult StringOk(string str)
+        {
+            return new StringResult(Request, Response, str);
+        }
+
+        public ActionResult Ok()
+        {
+            return StringOk(string.Empty);
+        }
+
+
+        public ActionResult ViewRedirect(string location, string template, object model = null)
+        {
+            if (Response != null)
+            {
+                Response.Redirect(location);
+            }
+
+            return StringOk(string.Empty);
+        }
+
+        public ActionResult JsonRedirect(string location, object data)
+        {
+            if (Response != null)
+            {
+                Response.Redirect(location);
+            }
+            return new JsonResult(Request, Response, data);
+        }
+
+        public ActionResult StringRedirect(string location, string str)
+        {
+            if (Response != null)
+            {
+                Response.Redirect(location);
+            }
+            return new StringResult(Request, Response, str);
+        }
+
+        public ActionResult Redirect(string location)
+        {
+            if (Response != null)
+            {
+                Response.Redirect(location);
+            }
+            return StringOk(string.Empty);
+        }
+
+
+        public ActionResult ViewBadRequest(string template, object model = null)
+        {
+            if (Response != null)
+            {
+                Response.StatusCode = 400;
+            }
+            return new ViewResult(this, template, model);
+        }
+
+        public ActionResult JsonBadRequest(object data)
+        {
+            if (Response != null)
+            {
+                Response.StatusCode = 400;
+            }
+            return new JsonResult(Request, Response, data);
+        }
+
+        public ActionResult StringBadRequest(string str)
+        {
+            if (Response != null)
+            {
+                Response.StatusCode = 400;
+            }
+            return new StringResult(Request, Response, str);
+        }
+
+        public ActionResult BadRequest()
+        {
+            if (Response != null)
+            {
+                Response.StatusCode = 400;
+            }
+            return StringOk(string.Empty);
         }
     }
 }

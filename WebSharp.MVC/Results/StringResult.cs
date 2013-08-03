@@ -9,18 +9,17 @@ namespace WebSharp.MVC
         public string Value { get; set; }
         public string ContentType { get; set; }
 
-        public StringResult(string value, string contentType = "text/plain")
+        public StringResult(IRequest request, IResponse response, string value, string contentType = "text/plain")
+            : base(request, response)
         {
             Value = value;
             ContentType = contentType;
         }
 
-        public override void HandleRequest(IRequest request, IResponse response)
+        public override string Render(object model = null)
         {
-            response.ContentType = ContentType;
-            var writer = new StreamWriter(response.Body);
-            writer.Write(Value);
-            writer.Flush();
+            Response.ContentType = ContentType;
+            return Value;
         }
     }
 }

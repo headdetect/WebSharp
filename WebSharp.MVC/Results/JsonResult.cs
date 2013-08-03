@@ -10,18 +10,17 @@ namespace WebSharp.MVC
         public object Value { get; set; }
         public Formatting Formatting { get; set; }
 
-        public JsonResult(object value, Formatting formatting = Formatting.None)
+        public JsonResult(IRequest request, IResponse response, object value, Formatting formatting = Formatting.None)
+            : base(request, response)
         {
             Value = value;
             Formatting = formatting;
         }
 
-        public override void HandleRequest(IRequest request, IResponse response)
+        public override string Render(object model = null)
         {
-            var writer = new StreamWriter(response.Body);
-            response.ContentType = "application/json";
-            writer.Write(JsonConvert.SerializeObject(Value));
-            writer.Flush();
+            Response.ContentType = "application/json";
+            return JsonConvert.SerializeObject(Value);
         }
     }
 }

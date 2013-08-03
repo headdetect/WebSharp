@@ -16,7 +16,6 @@ namespace WebSharp.MVC
     {
         static ViewResult()
         {
-            // Set defaults //
             ViewBase = "Views";
 
             using (var stream = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("WebSharp.MVC.DefaultRazorConfig.xml")))
@@ -35,33 +34,28 @@ namespace WebSharp.MVC
         public object Model { get; set; }
         public Controller Controller { get; set; }
 
-        public ViewResult(string view, Controller controller, object model = null)
+        public ViewResult(Controller controller, string view, object model = null)
+            : base(controller.Request, controller.Response)
         {
             View = view;
             Model = model;
             Controller = controller;
         }
 
-        public override void HandleRequest(IRequest request, IResponse response)
+        public override string Render(object model = null)
         {
-            response.ContentType = "text/html";
-            var writer = new StreamWriter(response.Body);
+            Response.ContentType = "text/html";
             var path = ResolveView(View);
             if (path == null)
-                throw new HttpNotFoundException(string.Format("Requested view not found. Looking for: {0}", Path.Combine(Controller.Name, View)));
-            string result;
+                throw new HttpNotFoundException(string.Format("Requested view not found. Looking for: {0}", Path.Combine(".", ViewBase, View)));
 
-            result = (string)Razor.ExecuteUrl(path.Replace('\\', '/'), Model, Controller.ViewBag, false, true).ToString();
+            return (string)Razor.ExecuteUrl(path.Replace('\\', '/'), Model, Controller.ViewBag, false, true).ToString();
 
-            writer.Write(result);
-            writer.Flush();
         }
 
         private string ResolveView(string view)
         {
-            if (File.Exists(Path.Combine(".", ViewBase, Controller.Name, view)))
-                return Path.Combine(Controller.Name, view);
-            return null;
+            return File.Exists(Path.Combine(".", ViewBase, view)) ? view : null;
         }
     }
 }

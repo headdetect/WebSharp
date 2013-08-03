@@ -29,12 +29,14 @@ namespace WebSharp.Handlers
         {
             if (request.Uri.Segments.Any(p => p == ".."))
                 throw new HttpForbiddenException("Disallowed characters in path");
-            if (Path.IsPathRooted(path)) path = path.Substring(path.IndexOfAny(new char[] { Path.DirectorySeparatorChar, '/', '\\' }) + 1);
+            if (Path.IsPathRooted(path)) path = path.Substring(path.IndexOfAny(new[] { Path.DirectorySeparatorChar, '/', '\\' }) + 1);
             if (!File.Exists(Path.Combine(BaseDirectory, path)))
                 throw new HttpNotFoundException("The requested static content was not found.");
 
             var stream = File.OpenRead(Path.Combine(BaseDirectory, path));
-            response.ContentType = HttpServer.GetContentTypeForExtension(Path.GetExtension(path).Substring(1));
+            var extension = Path.GetExtension(path);
+            if (extension != null)
+                response.ContentType = HttpServer.GetContentTypeForExtension(extension.Substring(1));
             response.AddHeader("Accept-Ranges", "bytes");
 
             // Handle ranges
@@ -44,14 +46,14 @@ namespace WebSharp.Handlers
                 //response.StatusCode = 206; // Breaks things for some unknown reason, quite infuriating
                 //response.StatusDescription = "Partial Content";
                 var range = request.Headers["Range"].Value;
-                var type = range.Remove(range.IndexOf("="));
+                var type = range.Remove(range.IndexOf("=", StringComparison.Ordinal));
                 if (type != "bytes")
                 {
                     response.StatusCode = 400;
                     response.StatusDescription = "Bad Request";
                     return;
                 }
-                range = range.Substring(range.IndexOf("=") + 1);
+                range = range.Substring(range.IndexOf("=", StringComparison.Ordinal) + 1);
                 var rangeParts = range.Split('-');
                 long start = int.Parse(rangeParts[0]);
                 long end;
@@ -73,11 +75,9 @@ namespace WebSharp.Handlers
             if (request.Uri.Segments.Any(p => p == ".."))
                 return false;
             var path = request.Uri.LocalPath;
-            if (Path.IsPathRooted(path)) path = path.Substring(path.IndexOfAny(new char[] { Path.DirectorySeparatorChar, '/', '\\' }) + 1);
+            if (Path.IsPathRooted(path)) path = path.Substring(path.IndexOfAny(new[] { Path.DirectorySeparatorChar, '/', '\\' }) + 1);
             string file = Path.Combine(BaseDirectory, path);
-            if (!File.Exists(file))
-                return false;
-            return true;
+            return File.Exists(file);
         }
     }
 }

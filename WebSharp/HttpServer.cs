@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using Griffin.Networking.Messaging;
 using Griffin.Networking.Protocol.Http;
 using Griffin.Networking.Protocol.Http.Protocol;
-using WebSharp.Exceptions;
 using HttpException = WebSharp.Exceptions.HttpException;
-using GHttpException = Griffin.Networking.Protocol.Http.HttpException;
 using Griffin.Networking.Protocol.Http.Services.BodyDecoders;
 
 namespace WebSharp
@@ -73,14 +67,14 @@ namespace WebSharp
             return response;
         }
 
-        void Log(IRequest request)
+        static void Log(IRequest request)
         {
             Console.WriteLine(request.Method + " " + request.Uri + " [" + request.RemoteEndPoint + "]");
             foreach (var header in request.Headers)
                 Console.WriteLine(" " + header.Name + ": " + header.Value);
         }
 
-        void Log(IResponse response)
+        static void Log(IResponse response)
         {
             Console.WriteLine("Response: " + response.StatusCode + ": " + response.StatusDescription);
             foreach (var header in response.Headers)

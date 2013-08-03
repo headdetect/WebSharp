@@ -5,12 +5,17 @@ namespace WebSharp.MVC
 {
     public abstract class ActionResult
     {
-        public abstract void HandleRequest(IRequest request, IResponse response);
+        protected IRequest Request { get; set; }
+        protected IResponse Response { get; set; }
 
-        public static implicit operator ActionResult(string a)
+        protected ActionResult(IRequest request, IResponse response)
         {
-            return new StringResult(a);
+            Request = request;
+            Response = response;
         }
+
+        public abstract string Render(object model = null);
+
     }
 }
 

@@ -34,7 +34,8 @@ namespace WebSharp
         public delegate IResponse RequestHandler(IRequest request);
         public RequestHandler Request;
 
-        public HttpServiceWrappper(RequestHandler request) : base(stack)
+        public HttpServiceWrappper(RequestHandler request)
+            : base(stack)
         {
             Request = request;
         }
