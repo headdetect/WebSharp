@@ -10,11 +10,11 @@ namespace WebSharp.Exceptions
     {
         public abstract int StatusCode { get; }
 
-        public HttpException()
+        protected HttpException()
         {
         }
 
-        public HttpException(string message) : base(message)
+        protected HttpException(string message) : base(message)
         {
         }
     }

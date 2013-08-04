@@ -3,6 +3,7 @@ using Griffin.Networking.Protocol.Http.Implementation;
 using Griffin.Networking.Protocol.Http.Protocol;
 using System.Dynamic;
 using System.Diagnostics;
+using WebSharp.Exceptions;
 
 namespace WebSharp.MVC
 {
@@ -21,99 +22,55 @@ namespace WebSharp.MVC
         }
 
 
-        public ActionResult ViewOk(string template, object model = null)
-        {
-            return new ViewResult(this, template, model);
-        }
-
-        public ActionResult JsonOk(object data)
-        {
-            return new JsonResult(Request, Response, data);
-        }
-
-        public ActionResult StringOk(string str)
-        {
-            return new StringResult(Request, Response, str);
-        }
-
-        public ActionResult Ok()
-        {
-            return StringOk(string.Empty);
-        }
-
-
-        public ActionResult ViewRedirect(string location, string template, object model = null)
+        public ActionResult View(string template, object model = null, HttpStatusCodes status = HttpStatusCodes.Ok)
         {
             if (Response != null)
-            {
-                Response.Redirect(location);
-            }
+                Response.StatusCode = (int)status;
 
-            return StringOk(string.Empty);
+            if(CanRender(status))
+                return new ViewResult(this, template, model);
+
+            //TODO: Exceptions. Lots of exceptions.
+
+            return new StringResult(Request, Response, "Not really sure what to do here");
         }
 
-        public ActionResult JsonRedirect(string location, object data)
+        public ActionResult Json(object data, HttpStatusCodes status = HttpStatusCodes.Ok)
         {
             if (Response != null)
-            {
-                Response.Redirect(location);
-            }
-            return new JsonResult(Request, Response, data);
+                Response.StatusCode = (int)status;
+
+            if (CanRender(status))
+                return new JsonResult(Request, Response, data);
+
+            //TODO: Exceptions. Lots of exceptions.
+
+            return new StringResult(Request, Response, "Not really sure what to do here");
+            
         }
 
-        public ActionResult StringRedirect(string location, string str)
+        public ActionResult Text(string str, HttpStatusCodes status = HttpStatusCodes.Ok)
         {
             if (Response != null)
-            {
-                Response.Redirect(location);
-            }
-            return new StringResult(Request, Response, str);
+                Response.StatusCode = (int)status;
+
+            if (CanRender(status))
+                return new StringResult(Request, Response, str);
+
+            //TODO: Exceptions. Lots of exceptions.
+
+            return new StringResult(Request, Response, "Not really sure what to do here");
+            
         }
 
-        public ActionResult Redirect(string location)
+
+        protected static bool CanRender(HttpStatusCodes code)
         {
-            if (Response != null)
-            {
-                Response.Redirect(location);
-            }
-            return StringOk(string.Empty);
+            //TODO: add all the rest of the status codes
+
+            return code != HttpStatusCodes.MovedTemp &&
+                   code != HttpStatusCodes.MovedPerm;
         }
 
-
-        public ActionResult ViewBadRequest(string template, object model = null)
-        {
-            if (Response != null)
-            {
-                Response.StatusCode = 400;
-            }
-            return new ViewResult(this, template, model);
-        }
-
-        public ActionResult JsonBadRequest(object data)
-        {
-            if (Response != null)
-            {
-                Response.StatusCode = 400;
-            }
-            return new JsonResult(Request, Response, data);
-        }
-
-        public ActionResult StringBadRequest(string str)
-        {
-            if (Response != null)
-            {
-                Response.StatusCode = 400;
-            }
-            return new StringResult(Request, Response, str);
-        }
-
-        public ActionResult BadRequest()
-        {
-            if (Response != null)
-            {
-                Response.StatusCode = 400;
-            }
-            return StringOk(string.Empty);
-        }
     }
 }

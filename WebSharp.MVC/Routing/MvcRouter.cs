@@ -37,7 +37,7 @@ namespace WebSharp.MVC
         public bool Match(IRequest request)
         {
             Dictionary<string, string> values = null;
-            var route = Routes.SingleOrDefault(r =>
+            var route = Routes.FirstOrDefault(r =>
             {
                 var keyPair = r.Match(request.Uri.LocalPath, CaseInsensitive);
                 if (keyPair == null) return false;
@@ -154,7 +154,7 @@ namespace WebSharp.MVC
         public async void Execute(IRequest request, IResponse response)
         {
             Dictionary<string, string> values = null;
-            var route = Routes.SingleOrDefault(r =>
+            var route = Routes.FirstOrDefault(r =>
             {
                 var keyPair = r.Match(request.Uri.LocalPath, CaseInsensitive);
                 if (keyPair == null) return false;
@@ -222,50 +222,53 @@ namespace WebSharp.MVC
                     localPath = localPath.Substring(1);
 
                 var parts = localPath.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
+                var routeParts = Route.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
 
                 Dictionary<string, string> values = new Dictionary<string, string>();
 
-                for (int i = 0; i < RouteParts.Length; i++)
+                // If localPath is not '/' or some variation ex '////////'
+                if (parts.Length != 0 || routeParts.Length != 0)
                 {
-                    if (RouteParts[i].StartsWith("{") && RouteParts[i].EndsWith("}"))
+                    for (int i = 0; i < RouteParts.Length; i++)
                     {
-                        var key = RouteParts[i].Substring(1, RouteParts[i].Length - 2);
-                        if (i >= parts.Length)
+                        if (RouteParts[i].StartsWith("{") && RouteParts[i].EndsWith("}"))
                         {
-                            if (Defaults.ContainsKey(key))
+                            var key = RouteParts[i].Substring(1, RouteParts[i].Length - 2);
+                            if (i >= parts.Length)
                             {
-                                if (!caseInsensitive)
-                                    values[key] = Defaults[key].ToString();
+                                if (Defaults.ContainsKey(key))
+                                {
+                                    if (!caseInsensitive)
+                                        values[key] = Defaults[key].ToString();
+                                    else
+                                        values[key] = Defaults[key].ToString().ToUpper();
+                                }
                                 else
-                                    values[key] = Defaults[key].ToString().ToUpper();
+                                    return null;
                             }
                             else
-                                return null;
+                            {
+                                if (Defaults.ContainsKey(key) && Defaults[key].Equals(parts[i]))
+                                {
+                                    if (!caseInsensitive)
+                                        values[key] = parts[i];
+                                    else
+                                        values[key] = parts[i].ToUpper();
+                                }
+                                else
+                                    return null;
+
+                            }
                         }
                         else
                         {
-                            if (Defaults.ContainsKey(key) && Defaults[key].Equals(parts[i]))
-                            {
-                                if (!caseInsensitive)
-                                    values[key] = parts[i];
-                                else
-                                    values[key] = parts[i].ToUpper();
-                            }
-                            else
+                            if (i >= parts.Length || parts[i] != RouteParts[i])
                                 return null;
-                            
                         }
                     }
-                    else
-                    {
-                        if (i >= parts.Length || parts[i] != RouteParts[i])
-                            return null;
-                    }
                 }
-                foreach (var item in Defaults)
-                {
-                    if (!values.ContainsKey(item.Key))
-                        values.Add(item.Key, Convert.ToString(item.Value));
+                foreach (var item in Defaults.Where(item => !values.ContainsKey(item.Key))) {
+                    values.Add(item.Key, Convert.ToString(item.Value));
                 }
                 return values;
             }
