@@ -32,7 +32,7 @@ namespace WebSharp
 
         private IResponse ListenerCallback(IRequest request)
         {
-            var response = request.CreateResponse(HttpStatusCode.OK, "OK");
+            var response = request.CreateResponse(System.Net.HttpStatusCode.OK, "OK");
             response.Body = new MemoryStream();
             if (Request == null)
             {

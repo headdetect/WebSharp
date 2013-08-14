@@ -1,26 +1,25 @@
-using System;
 using Griffin.Networking.Protocol.Http.Protocol;
 using System.IO;
 
-namespace WebSharp.MVC
+namespace WebSharp.MVC.Results
 {
     public class StringResult : ActionResult
     {
         public string Value { get; set; }
         public string ContentType { get; set; }
 
-        public StringResult(IRequest request, IResponse response, string value, string contentType = "text/plain")
-            : base(request, response)
+        public StringResult(string value, string contentType = "text/plain")
         {
             Value = value;
             ContentType = contentType;
         }
 
-        public override string Render(object model = null)
+        public override void HandleRequest(IRequest request, IResponse response)
         {
-            Response.ContentType = ContentType;
-            return Value;
+            response.ContentType = ContentType;
+            var writer = new StreamWriter(response.Body);
+            writer.Write(Value);
+            writer.Flush();
         }
     }
 }
-

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using WebSharp.MVC.Results;
 using WebSharp.Routing;
 using Griffin.Networking.Protocol.Http.Protocol;
 using System.Collections.Generic;
@@ -151,7 +152,7 @@ namespace WebSharp.MVC
             return null;
         }
 
-        public async void Execute(IRequest request, IResponse response)
+        public void Execute(IRequest request, IResponse response)
         {
             Dictionary<string, string> values = null;
             var route = Routes.FirstOrDefault(r =>
@@ -175,13 +176,8 @@ namespace WebSharp.MVC
             controller.ViewBag = new DynamicViewBag();
             var result = (ActionResult)action.Invoke(controller, parameters);
 
-            var writer = new StreamWriter(response.Body);
-
-            string template = result.Render();
-
-            await writer.WriteAsync(template);
-
-            await writer.FlushAsync();
+            if (result != null)
+                result.HandleRequest(request, response);
 
         }
 
@@ -267,7 +263,8 @@ namespace WebSharp.MVC
                         }
                     }
                 }
-                foreach (var item in Defaults.Where(item => !values.ContainsKey(item.Key))) {
+                foreach (var item in Defaults.Where(item => !values.ContainsKey(item.Key)))
+                {
                     values.Add(item.Key, Convert.ToString(item.Value));
                 }
                 return values;

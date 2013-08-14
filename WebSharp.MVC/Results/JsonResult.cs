@@ -1,27 +1,26 @@
-using System;
 using Griffin.Networking.Protocol.Http.Protocol;
 using Newtonsoft.Json;
 using System.IO;
 
-namespace WebSharp.MVC
+namespace WebSharp.MVC.Results
 {
     public class JsonResult : ActionResult
     {
         public object Value { get; set; }
         public Formatting Formatting { get; set; }
 
-        public JsonResult(IRequest request, IResponse response, object value, Formatting formatting = Formatting.None)
-            : base(request, response)
+        public JsonResult(object value, Formatting formatting = Formatting.None)
         {
             Value = value;
             Formatting = formatting;
         }
 
-        public override string Render(object model = null)
+        public override void HandleRequest(IRequest request, IResponse response)
         {
-            Response.ContentType = "application/json";
-            return JsonConvert.SerializeObject(Value);
+            var writer = new StreamWriter(response.Body);
+            response.ContentType = "application/json";
+            writer.Write(JsonConvert.SerializeObject(Value));
+            writer.Flush();
         }
     }
 }
-

@@ -94,7 +94,7 @@
     <Compile Include="Exceptions\HttpUnauthorizedException.cs" />
     <Compile Include="Exceptions\HttpUnsupportedMediaTypeException.cs" />
     <Compile Include="Handlers\StaticContentHandler.cs" />
-    <Compile Include="HttpStatusCodes.cs" />
+    <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Routing\HttpRouter.cs" />
     <Compile Include="HttpServer.cs" />
     <Compile Include="HttpService.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -46,7 +47,10 @@ namespace WebSharp
 
         public override void OnRequest(IRequest request)
         {
-            Send(Request(request));
+            var updated = Request(request);
+            if (updated.StatusCode == 302)
+                Debugger.Break();
+            Send(updated);
         }
     }
 }

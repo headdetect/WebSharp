@@ -1,13 +1,13 @@
 ﻿
 namespace WebSharp
 {
-    public enum HttpStatusCodes
+    public enum HttpStatusCode
     {
         /// <summary> HTTP Status-Code: 0 (Communication with Server failed) </summary>
         CommunicationFailed = 0,
 
         /// <summary> HTTP Status-Code: 200 (OK) </summary>
-        Ok = 200,
+        OK = 200,
 
         /// <summary> HTTP Status-Code: 201 (Created) </summary>
         Created = 201,

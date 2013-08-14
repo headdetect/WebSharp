@@ -1,21 +1,14 @@
-using System;
 using Griffin.Networking.Protocol.Http.Protocol;
 
-namespace WebSharp.MVC
+namespace WebSharp.MVC.Results
 {
     public abstract class ActionResult
     {
-        protected IRequest Request { get; set; }
-        protected IResponse Response { get; set; }
+        public abstract void HandleRequest(IRequest request, IResponse response);
 
-        protected ActionResult(IRequest request, IResponse response)
+        public static implicit operator ActionResult(string a)
         {
-            Request = request;
-            Response = response;
+            return new StringResult(a);
         }
-
-        public abstract string Render(object model = null);
-
     }
 }
-
