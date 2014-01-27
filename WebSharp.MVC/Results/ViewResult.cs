@@ -29,8 +29,6 @@ namespace WebSharp.MVC.Results
         public object Model { get; set; }
         public Controller Controller { get; set; }
 
-        private readonly bool _resolveExact;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewResult"/> class.
         /// </summary>
@@ -38,12 +36,11 @@ namespace WebSharp.MVC.Results
         /// <param name="controller">The controller that is handeling the result.</param>
         /// <param name="model">The model to give the view.</param>
         /// <param name="resolveExact">if set to <c>true</c>, path will be resolved by calling object; else it will be resolved automatically.</param>
-        public ViewResult(string view, Controller controller, object model = null, bool resolveExact = false)
+        public ViewResult(string view, Controller controller, object model = null)
         {
             View = view;
             Model = model;
             Controller = controller;
-            _resolveExact = resolveExact;
         }
 
         public override void HandleRequest(IRequest request, IResponse response)
@@ -62,15 +59,12 @@ namespace WebSharp.MVC.Results
 
         private string ResolveView(string view)
         {
-            // This is good for using exact paths //
-            // EX: I could do 'Pages/Login.cshtml' and it would find 'ViewBase/Pages/Login.cshtml'
-
-            if (_resolveExact) 
-                return File.Exists(Path.Combine(".", ViewBase, view)) ? view : null;
-
-            return File.Exists(Path.Combine(".", ViewBase, Controller.Name, view)) ?
-                    Path.Combine(Controller.Name, view) :
-                    null;
+            string path = null;
+            if(File.Exists(Path.Combine(".", ViewBase, Controller.Name, view)))
+                path = Path.Combine(Controller.Name, view);
+            if (File.Exists(Path.Combine(".", ViewBase, Controller.Name, view + ".cshtml")))
+                path = Path.Combine(Controller.Name, view + ".cshtml");
+            return path;
         }
     }
 }
