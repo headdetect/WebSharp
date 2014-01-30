@@ -172,7 +172,8 @@ namespace WebSharp.MVC
                 throw new HttpNotFoundException("Specified controller was not found.");
             object[] parameters;
             var action = ResolveAction(controller, request, values, out parameters);
-            controller.Request = request; controller.Response = response;
+            controller.Request = request; 
+            controller.Response = response;
             controller.ViewBag = new DynamicViewBag();
             var result = (ActionResult)action.Invoke(controller, parameters);
 
