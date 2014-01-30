@@ -32,7 +32,7 @@ namespace WebSharp.MVC
         /// <param name="resolveExact">if set to <c>true</c>, path will be resolved by calling object; else it will be resolved automatically.</param>
         /// <returns>The result of the action</returns>
         /// <exception cref="System.InvalidOperationException"></exception>
-        public ActionResult View(string template = null, object model = null, HttpStatusCode status = HttpStatusCode.OK, bool resolveExact = false)
+        public ActionResult View(string template = null, object model = null, HttpStatusCode status = HttpStatusCode.OK)
         {
             if (template == null)
                 template = new StackFrame(1, true).GetMethod().Name + ".cshtml";
@@ -44,7 +44,7 @@ namespace WebSharp.MVC
             }
 
             if(CanRender(status))
-                return new ViewResult(template, this, model, resolveExact);
+                return new ViewResult(template, this, model);
 
             //TODO: Exceptions. Lots of exceptions.
 
