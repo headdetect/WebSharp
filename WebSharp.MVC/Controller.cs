@@ -85,7 +85,7 @@ namespace WebSharp.MVC
 
         }
 
-        public ActionResult Redirect(string location, HttpStatusCode status = HttpStatusCode.MovedTemp)
+        public RedirectResult Redirect(string location)
         {
             if (Response != null)
             {
@@ -93,11 +93,26 @@ namespace WebSharp.MVC
 
                 Response.Redirect(uri.AbsoluteUri);
                 Response.KeepAlive = false;
-                Response.StatusCode = (int)status;
-                Response.StatusDescription = status.ToString();
+                Response.StatusCode = (int)HttpStatusCode.MovedTemp;
+                Response.StatusDescription = HttpStatusCode.MovedTemp.ToString();
             }
 
-            return View(location);
+            return new RedirectResult(location);
+        }
+
+        public RedirectResult RedirectPermanent(string location)
+        {
+            if (Response != null)
+            {
+                Uri uri = new Uri(Request.Uri, location);
+
+                Response.Redirect(uri.AbsoluteUri);
+                Response.KeepAlive = false;
+                Response.StatusCode = (int)HttpStatusCode.MovedPerm;
+                Response.StatusDescription = HttpStatusCode.MovedPerm.ToString();
+            }
+
+            return new RedirectResult(location);
         }
 
 

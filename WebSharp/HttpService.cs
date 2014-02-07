@@ -48,8 +48,6 @@ namespace WebSharp
         public override void OnRequest(IRequest request)
         {
             var updated = Request(request);
-            if (updated.StatusCode == 302)
-                Debugger.Break();
             Send(updated);
         }
     }

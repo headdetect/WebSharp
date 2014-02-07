@@ -65,6 +65,7 @@
     <Compile Include="Html\HtmlStrong.cs" />
     <Compile Include="Results\ActionResult.cs" />
     <Compile Include="Results\JsonResult.cs" />
+    <Compile Include="Results\RedirectResult.cs" />
     <Compile Include="Routing\MvcRouter.cs" />
     <Compile Include="Results\ViewResult.cs" />
     <Compile Include="DynamicViewBag.cs" />
