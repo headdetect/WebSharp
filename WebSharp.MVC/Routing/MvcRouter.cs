@@ -15,13 +15,11 @@ namespace WebSharp.MVC
     {
         public List<MvcRoute> Routes { get; set; }
         public List<Controller> Controllers { get; set; }
-        public bool CaseInsensitive { get; set; }
 
         public MvcRouter()
         {
             Routes = new List<MvcRoute>();
             Controllers = new List<Controller>();
-            CaseInsensitive = true;
         }
 
         public void AddRoute(string name, string route, object defaults = null)
@@ -40,7 +38,7 @@ namespace WebSharp.MVC
             Dictionary<string, string> values = null;
             var route = Routes.FirstOrDefault(r =>
             {
-                var keyPair = r.Match(request.Uri.LocalPath, CaseInsensitive);
+                var keyPair = r.Match(request.Uri.LocalPath);
                 if (keyPair == null) return false;
                 values = keyPair;
                 return true;
@@ -49,8 +47,7 @@ namespace WebSharp.MVC
                 return false;
             if (!values.ContainsKey("controller") && !values.ContainsKey("action"))
                 return false;
-            var controller = Controllers.SingleOrDefault(c => c.Name.Equals(values["controller"],
-                CaseInsensitive ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture));
+            var controller = Controllers.SingleOrDefault(c => c.Name.Equals(values["controller"], StringComparison.CurrentCultureIgnoreCase));
             if (controller == null)
                 return false;
             object[] parameters;
@@ -62,7 +59,7 @@ namespace WebSharp.MVC
         {
             // TODO: ActionName attribute
             var methods = controller.GetType().GetMethods().Where(m =>
-                m.IsPublic && m.Name.Equals(values["action"], CaseInsensitive ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture) &&
+                m.IsPublic && m.Name.Equals(values["action"], StringComparison.CurrentCultureIgnoreCase) &&
                 typeof(ActionResult).IsAssignableFrom(m.ReturnType));
             foreach (var method in methods)
             {
@@ -72,46 +69,28 @@ namespace WebSharp.MVC
                 foreach (var parameter in parameters)
                 {
                     var name = parameter.Name;
-                    if (!CaseInsensitive)
+
+                    if (values.ContainsKey(name.ToUpper()))
                     {
-                        if (values.ContainsKey(name))
+                        try
                         {
-                            try
-                            {
-                                actionParameters[matches] = Convert.ChangeType(values[name], parameter.ParameterType);
-                            }
-                            catch
-                            {
-                                matches = -1;
-                                break;
-                            }
-                            matches++;
-                            continue;
+                            actionParameters[matches] = Convert.ChangeType(values[name.ToUpper()], parameter.ParameterType);
                         }
-                    }
-                    else
-                    {
-                        if (values.ContainsKey(name.ToUpper()))
+                        catch
                         {
-                            try
-                            {
-                                actionParameters[matches] = Convert.ChangeType(values[name.ToUpper()], parameter.ParameterType);
-                            }
-                            catch
-                            {
-                                matches = -1;
-                                break;
-                            }
-                            matches++;
-                            continue;
+                            matches = -1;
+                            break;
                         }
+                        matches++;
+                        continue;
                     }
-                    if (request.QueryString.Any(q => q.Name.Equals(name, CaseInsensitive ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture)))
+
+                    if (request.QueryString.Any(q => q.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
                     {
                         try
                         {
                             actionParameters[matches] = Convert.ChangeType(request.QueryString.First(
-                                q => q.Name.Equals(name, CaseInsensitive ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture)).Value,
+                                q => q.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)).Value,
                                 parameter.ParameterType);
                         }
                         catch
@@ -123,12 +102,12 @@ namespace WebSharp.MVC
                     }
                     if (request.Method == "POST" && request.Form != null)
                     {
-                        if (request.Form.Any(q => q.Name.Equals(name, CaseInsensitive ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture)))
+                        if (request.Form.Any(q => q.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)))
                         {
                             try
                             {
                                 var value = request.Form.First(
-                                    q => q.Name.Equals(name, CaseInsensitive ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture)).Value;
+                                    q => q.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase)).Value;
                                 if (parameter.ParameterType == typeof(bool))
                                 {
                                     if (value.ToUpper() == "ON" || value.ToUpper() == "OFF")
@@ -157,7 +136,7 @@ namespace WebSharp.MVC
             Dictionary<string, string> values = null;
             var route = Routes.FirstOrDefault(r =>
             {
-                var keyPair = r.Match(request.Uri.LocalPath, CaseInsensitive);
+                var keyPair = r.Match(request.Uri.LocalPath);
                 if (keyPair == null) return false;
                 values = keyPair;
                 return true;
@@ -166,8 +145,7 @@ namespace WebSharp.MVC
                 throw new HttpNotFoundException("Specified controller was not found.");
             if (!values.ContainsKey("controller") && !values.ContainsKey("action"))
                 throw new HttpNotFoundException("Specified controller was not found.");
-            var controller = Controllers.SingleOrDefault(c => c.Name.Equals(values["controller"],
-                CaseInsensitive ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture));
+            var controller = Controllers.SingleOrDefault(c => c.Name.Equals(values["controller"], StringComparison.CurrentCultureIgnoreCase));
             if (controller == null)
                 throw new HttpNotFoundException("Specified controller was not found.");
             object[] parameters;
@@ -212,10 +190,10 @@ namespace WebSharp.MVC
                 }
             }
 
-            public Dictionary<string, string> Match(string localPath, bool caseInsensitive)
+            public Dictionary<string, string> Match(string localPath)
             {
                 if (localPath.StartsWith("/"))
-                    localPath = localPath.Substring(1);
+                    localPath = localPath.Substring(1).ToUpper();
 
                 var parts = localPath.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
                 var routeParts = Route.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
@@ -232,27 +210,33 @@ namespace WebSharp.MVC
                             var key = RouteParts[i].Substring(1, RouteParts[i].Length - 2);
                             if (i >= parts.Length)
                             {
-                                if (Defaults.ContainsKey(key))
+                                if (Defaults.ContainsKey(key.ToUpper()))
                                 {
-                                    if (!caseInsensitive)
-                                        values[key] = Defaults[key].ToString();
-                                    else
-                                        values[key] = Defaults[key].ToString().ToUpper();
+                                    values[key.ToUpper()] = Defaults[key.ToUpper()].ToString().ToUpper();
                                 }
                                 else
                                     return null;
                             }
                             else
                             {
-                                if (Defaults.ContainsKey(key) && Defaults[key].Equals(parts[i]))
+
+                                if (Defaults.ContainsKey(key))
                                 {
-                                    if (!caseInsensitive)
-                                        values[key] = parts[i];
-                                    else
+                                    if (Defaults[key] is string && ((string)Defaults[key]).Equals(parts[i], StringComparison.CurrentCultureIgnoreCase))
+                                    {
                                         values[key] = parts[i].ToUpper();
+                                    }
+                                    else
+                                        if (Defaults[key].Equals(parts[i]))
+                                        {
+                                            values[key] = parts[i].ToUpper();
+                                        }
+                                        else return null;
                                 }
                                 else
+                                {
                                     return null;
+                                }
 
                             }
                         }
